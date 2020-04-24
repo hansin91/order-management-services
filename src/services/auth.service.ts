@@ -8,9 +8,17 @@ export class AuthService {
     return this.httpService.post(process.env.ADMIN_URL + '/api/auth/login', payload).toPromise();
   }
 
+  googleLogin(token) {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.post(process.env.ADMIN_URL + '/api/auth/gLogin', '', { headers }).toPromise();
+  }
+
   verify(token: string) {
     const headers = {
-      'Content-Type': 'application/json', // afaik this one is not needed
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     };
     return this.httpService.post(process.env.ADMIN_URL + '/api/auth/verify', '', { headers } ).toPromise();

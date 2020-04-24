@@ -25,6 +25,25 @@ export class AuthController {
     });
   }
 
+  @MessagePattern({ cmd: 'gLogin'})
+  googleLogin(payload: any) {
+    const response =  this.authService.googleLogin(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        token: data.token,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
   @MessagePattern({ cmd: 'verify'})
   verify(token: string) {
     return this.authService.verify(token)
