@@ -62,4 +62,23 @@ export class AuthController {
       });
     });
   }
+
+  @MessagePattern({ cmd: 'logout'})
+  logout(token: string) {
+    return this.authService.logout(token)
+    .then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        message: data.message,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
 }

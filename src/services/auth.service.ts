@@ -23,4 +23,12 @@ export class AuthService {
     };
     return this.httpService.post(process.env.ADMIN_URL + '/api/auth/verify', '', { headers } ).toPromise();
   }
+
+  logout(token: string) {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.post(process.env.ADMIN_URL + '/api/auth/logout', '', { headers } ).toPromise();
+  }
 }
