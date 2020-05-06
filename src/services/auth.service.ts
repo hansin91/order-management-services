@@ -4,11 +4,11 @@ import { Injectable, HttpService } from '@nestjs/common';
 export class AuthService {
   constructor(private readonly httpService: HttpService) {}
 
-  login(payload) {
+  login(payload: any) {
     return this.httpService.post(process.env.ADMIN_URL + '/api/auth/login', payload).toPromise();
   }
 
-  googleLogin(token) {
+  googleLogin(token: string) {
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
