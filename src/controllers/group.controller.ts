@@ -46,6 +46,25 @@ export class GroupController {
     });
   }
 
+  @MessagePattern({ cmd: 'delete-group' })
+  deleteGroup(payload: any) {
+    const response =  this.groupService.deleteGroup(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        message: data.message,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
   @MessagePattern({ cmd: 'load-groups' })
   loadGroups(token: string) {
     const response =  this.groupService.loadGroups(token);

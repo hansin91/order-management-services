@@ -21,6 +21,15 @@ export class GroupService {
     return this.httpService.put(process.env.ADMIN_URL + '/api/groups/' + id, payload.body, { headers }).toPromise();
   }
 
+  deleteGroup(payload: any) {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${payload.token}`,
+    };
+    const id = payload.id;
+    return this.httpService.delete(process.env.ADMIN_URL + '/api/groups/' + id, { headers }).toPromise();
+  }
+
   loadGroups(token: any) {
     const headers = {
       'Content-Type': 'application/json',
