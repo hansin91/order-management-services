@@ -17,4 +17,17 @@ export class OrderService {
     }).toPromise();
   }
 
+  loadOrderStatus(payload: any) {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${payload.token}`,
+    };
+    return this.httpService.get(process.env.APP_URL + '/api/orders/status',
+      { headers,
+        params: {
+        date: payload.date,
+      },
+    }).toPromise();
+  }
+
 }

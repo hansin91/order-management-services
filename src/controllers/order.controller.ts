@@ -24,4 +24,23 @@ export class OrderController {
       });
     });
   }
+
+  @MessagePattern({ cmd: 'order-status' })
+  loadOrderStatus(payload: any) {
+    const response =  this.orderService.loadOrderStatus(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        list: data.list,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
 }
