@@ -53,6 +53,7 @@ export class OrderService {
         params: {
         date: payload.date,
         shipping: payload.shipping,
+        page: payload.page,
         status: payload.status,
       },
     }).toPromise();
