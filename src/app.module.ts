@@ -1,10 +1,38 @@
 import { Module, HttpModule } from '@nestjs/common';
-import { AuthService, CategoryService, GroupService, OrderService } from '@services';
-import { AuthController, CategoryController, GroupController, OrderController } from '@controllers';
+import {
+  AuthService,
+  CategoryService,
+  GroupService,
+  OrderService,
+  StatusService,
+  ShippingService,
+} from '@services';
+import {
+  AuthController,
+  CategoryController,
+  GroupController,
+  OrderController,
+  StatusController,
+  ShippingController,
+} from '@controllers';
 
 @Module({
   imports: [HttpModule],
-  providers: [AuthService, CategoryService, GroupService, OrderService],
-  controllers: [ AuthController, CategoryController, GroupController, OrderController],
+  providers: [
+    AuthService,
+    CategoryService,
+    GroupService,
+    OrderService,
+    StatusService,
+    ShippingService,
+  ],
+  controllers: [
+    AuthController,
+    CategoryController,
+    GroupController,
+    OrderController,
+    StatusController,
+    ShippingController,
+  ],
 })
 export class AppModule {}

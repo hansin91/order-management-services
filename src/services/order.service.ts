@@ -55,6 +55,7 @@ export class OrderService {
         shipping: payload.shipping,
         page: payload.page,
         status: payload.status,
+        shippingId: payload.shippingId,
       },
     }).toPromise();
   }
