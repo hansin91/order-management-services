@@ -6,7 +6,7 @@ import { AppModule } from './app.module';
 
 const logger = new Logger();
 
-async function bootstrap() {
+async function TCPBootstrap() {
   const app = await NestFactory.createMicroservice(AppModule, {
     transport: Transport.TCP,
     options: {
@@ -14,6 +14,28 @@ async function bootstrap() {
       port: Number(process.env.PORT),
     },
   });
-  app.listen(() => logger.log('Microservice A is listening'));
+  app.listen(() => logger.log('TCP Microservice is listening'));
 }
-bootstrap();
+TCPBootstrap();
+
+async function RabbitMQBootstrap() {
+  const PORT = Number(process.env.RABBITMQ_PORT);
+  const HOST = process.env.RABBITMQ_HOST;
+  const USERNAME =  process.env.RABBITMQ_USER;
+  const PASSWORD = process.env.RABBITMQ_PASSWORD;
+  const app = await NestFactory.createMicroservice(AppModule, {
+    transport: Transport.RMQ,
+    options: {
+      urls: ['amqp://' + USERNAME + ':' + PASSWORD + '@' + HOST + ':' + PORT],
+      queue: process.env.RABBITMQ_QUEUE,
+      queueOptions: {
+        durable: false,
+      },
+      noAck: false,
+      prefetchCount: 1,
+    },
+  });
+  await app.listen(() => logger.log('RabbitMQ Microservice is listening'));
+}
+
+RabbitMQBootstrap();

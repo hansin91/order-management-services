@@ -1,10 +1,32 @@
 import { Controller, HttpStatus } from '@nestjs/common';
 import { OrderService } from '@services';
-import { RpcException, MessagePattern } from '@nestjs/microservices';
+import { RpcException, MessagePattern, Payload, Ctx, RmqContext } from '@nestjs/microservices';
 
 @Controller()
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
+
+  @MessagePattern({ cmd: 'save-order'})
+  saveOrder(@Payload() payload: any, @Ctx() context: RmqContext ) {
+    const channel = context.getChannelRef();
+    const message = context.getMessage();
+    const response =  this.orderService.saveOrder(payload);
+    channel.ack(message);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        data: data.order,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
 
   @MessagePattern({ cmd: 'order-shippings' })
   loadOrderShippings(payload: any) {
