@@ -12,6 +12,22 @@ export class OrderService {
     return this.httpService.post(process.env.APP_URL + '/api/orders', payload.body, { headers }).toPromise();
   }
 
+  editOrder(payload: any) {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${payload.token}`,
+    };
+    return this.httpService.put(process.env.APP_URL + '/api/orders', payload.body, { headers }).toPromise();
+  }
+
+  saveBulkOrder(payload: any) {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${payload.token}`,
+    };
+    return this.httpService.post(process.env.APP_URL + '/api/orders/bulk', payload.body, { headers }).toPromise();
+  }
+
   loadOrderShippings(payload: any) {
     const headers = {
       'Content-Type': 'application/json',

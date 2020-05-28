@@ -28,6 +28,47 @@ export class OrderController {
     });
   }
 
+  @MessagePattern({ cmd: 'save-bulk-order'})
+  saveBulkOrder(@Payload() payload: any, @Ctx() context: RmqContext ) {
+    const channel = context.getChannelRef();
+    const message = context.getMessage();
+    const response =  this.orderService.saveBulkOrder(payload);
+    channel.ack(message);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        data: data.orders,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
+  @MessagePattern({ cmd: 'edit-order' })
+  editOrder(payload: any) {
+    const response =  this.orderService.editOrder(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        order: data.order,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
   @MessagePattern({ cmd: 'order-shippings' })
   loadOrderShippings(payload: any) {
     const response =  this.orderService.loadOrderShippings(payload);
