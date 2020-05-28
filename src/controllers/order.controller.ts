@@ -151,7 +151,7 @@ export class OrderController {
     return response.then(({ data }) => {
       return {
         status: HttpStatus.OK,
-        locked: data.locked,
+        date: data.date,
       };
     })
     .catch(err => {
