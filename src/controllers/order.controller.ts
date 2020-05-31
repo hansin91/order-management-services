@@ -16,6 +16,7 @@ export class OrderController {
       return {
         status: HttpStatus.OK,
         data: data.order,
+        param: data.param,
       };
     })
     .catch(err => {
@@ -38,6 +39,7 @@ export class OrderController {
       return {
         status: HttpStatus.OK,
         data: data.orders,
+        param: data.param,
       };
     })
     .catch(err => {
