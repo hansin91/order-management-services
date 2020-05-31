@@ -16,4 +16,20 @@ export class StatusService {
       },
     }).toPromise();
   }
+
+  loadStatusSummary(payload: any) {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${payload.token}`,
+    };
+    return this.httpService.get(process.env.APP_URL + '/api/status/summary',
+      { headers,
+        params: {
+        date: payload.date,
+        shipping: payload.shipping,
+        page: payload.page,
+        status: payload.status,
+      },
+    }).toPromise();
+  }
 }

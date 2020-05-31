@@ -7,6 +7,7 @@ import {
   StatusService,
   ShippingService,
   PageService,
+  ProductService,
 } from '@services';
 import {
   AuthController,
@@ -16,6 +17,7 @@ import {
   StatusController,
   ShippingController,
   PageController,
+  ProductController,
 } from '@controllers';
 
 @Module({
@@ -28,6 +30,7 @@ import {
     StatusService,
     ShippingService,
     PageService,
+    ProductService,
   ],
   controllers: [
     AuthController,
@@ -37,6 +40,7 @@ import {
     StatusController,
     ShippingController,
     PageController,
+    ProductController,
   ],
 })
 export class AppModule {}

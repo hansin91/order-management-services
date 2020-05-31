@@ -59,6 +59,7 @@ export class OrderController {
         order: data.order,
         orders: data.orders,
         list: data.list,
+        statusSummary: data.statusSummary,
       };
     })
     .catch(err => {
