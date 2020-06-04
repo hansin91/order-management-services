@@ -168,4 +168,61 @@ export class OrderController {
       });
     });
   }
+
+  @MessagePattern({ cmd: 'order-pages' })
+  loadOrderPages(payload: any) {
+    const response =  this.orderService.loadOrderPages(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        pages: data.pages,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
+  @MessagePattern({ cmd: 'order-print' })
+  loadPrintedOrders(payload: any) {
+    const response =  this.orderService.loadPrintedOrders(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        print: data.print,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
+  @MessagePattern({ cmd: 'print-orders' })
+  printOrders(payload: any) {
+    const response =  this.orderService.printOrders(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        orders: data.orders,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
 }
