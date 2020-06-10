@@ -22,13 +22,17 @@ export class StatusService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${payload.token}`,
     };
+    const { start, end, dropshipping, date, shipping, page, status } = payload;
     return this.httpService.get(process.env.APP_URL + '/api/status/summary',
       { headers,
         params: {
-        date: payload.date,
-        shipping: payload.shipping,
-        page: payload.page,
-        status: payload.status,
+        date,
+        shipping,
+        page,
+        status,
+        start,
+        end,
+        dropshipping,
       },
     }).toPromise();
   }
