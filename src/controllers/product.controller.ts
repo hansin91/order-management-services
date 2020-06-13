@@ -13,6 +13,7 @@ export class ProductController {
       return {
         status: HttpStatus.OK,
         summary: data.summary,
+        all: data.all,
       };
     })
     .catch(err => {
