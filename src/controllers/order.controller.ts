@@ -132,6 +132,25 @@ export class OrderController {
     });
   }
 
+  @MessagePattern({ cmd: 'orders-shopee' })
+  loadOrderShopee(payload: any) {
+    const response =  this.orderService.loadOrderShopee(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        result: data.result,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
   @MessagePattern({ cmd: 'order-total' })
   loadTotalOrderTotalPage(payload: any) {
     const response =  this.orderService.loadTotalOrderTotalPage(payload);

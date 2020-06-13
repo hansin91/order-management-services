@@ -30,6 +30,14 @@ export class OrderService {
     return this.httpService.put(process.env.APP_URL + '/api/orders', payload.body, { headers }).toPromise();
   }
 
+  loadOrderShopee(payload: any) {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${payload.token}`,
+    };
+    return this.httpService.post(process.env.APP_URL + '/api/orders/shopee', payload, { headers }).toPromise();
+  }
+
   saveBulkOrder(payload: any) {
     const headers = {
       'Content-Type': 'application/json',
