@@ -94,6 +94,25 @@ export class OrderController {
     });
   }
 
+  @MessagePattern({ cmd: 'order-stores' })
+  loadOrderStores(payload: any) {
+    const response =  this.orderService.loadOrderStores(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        stores: data.stores,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
   @MessagePattern({ cmd: 'order-dropshipping' })
   loadOrderDropshipping(payload: any) {
     const response =  this.orderService.loadOrderDropshipping(payload);

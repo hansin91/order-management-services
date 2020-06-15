@@ -47,12 +47,12 @@ export class OrderService {
   }
 
   loadOrderShippings(payload: any) {
+    const { token, stores, dropshipping, status, shipping, date, start, end } = payload;
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${payload.token}`,
+      'Authorization': `Bearer ${token}`,
     };
-    const { dropshipping, status, shipping, date, start, end } = payload;
-    return this.httpService.get(process.env.APP_URL + '/api/orders/shipping',
+    return this.httpService.get(process.env.APP_URL + '/api/orders/shippings',
       { headers,
         params: {
         date,
@@ -61,6 +61,27 @@ export class OrderService {
         end,
         shipping,
         dropshipping,
+        stores,
+      },
+    }).toPromise();
+  }
+
+  loadOrderStores(payload: any) {
+    const { token, stores, dropshipping, status, shipping, date, start, end } = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.get(process.env.APP_URL + '/api/orders/stores',
+      { headers,
+        params: {
+        date,
+        start,
+        status,
+        end,
+        shipping,
+        dropshipping,
+        stores,
       },
     }).toPromise();
   }
@@ -70,7 +91,7 @@ export class OrderService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${payload.token}`,
     };
-    const { dropshipping, status, shipping, date, start, end } = payload;
+    const { stores, dropshipping, status, shipping, date, start, end } = payload;
     return this.httpService.get(process.env.APP_URL + '/api/orders/dropshipping',
       { headers,
         params: {
@@ -80,6 +101,7 @@ export class OrderService {
         end,
         shipping,
         dropshipping,
+        stores,
       },
     }).toPromise();
   }
@@ -89,7 +111,7 @@ export class OrderService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${payload.token}`,
     };
-    const { dropshipping, shipping, status, date, start, end } = payload;
+    const { stores, dropshipping, shipping, status, date, start, end } = payload;
     return this.httpService.get(process.env.APP_URL + '/api/orders/status',
       { headers,
         params: {
@@ -99,6 +121,7 @@ export class OrderService {
         shipping,
         status,
         dropshipping,
+        stores,
       },
     }).toPromise();
   }
@@ -108,7 +131,7 @@ export class OrderService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${payload.token}`,
     };
-    const { dropshipping, shipping, status, date, start, end } = payload;
+    const { stores, dropshipping, shipping, status, date, start, end } = payload;
     return this.httpService.get(process.env.APP_URL + '/api/orders/total',
       { headers,
         params: {
@@ -118,6 +141,7 @@ export class OrderService {
         shipping,
         status,
         dropshipping,
+        stores,
       },
     }).toPromise();
   }
@@ -127,7 +151,7 @@ export class OrderService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${payload.token}`,
     };
-    const { dropshipping, offset, limit, start, end, shippingId, status, date, page, shipping } = payload;
+    const { stores, dropshipping, offset, limit, start, end, shippingId, status, date, page, shipping } = payload;
     return this.httpService.get(process.env.APP_URL + '/api/orders',
       { headers,
         params: {
@@ -141,6 +165,7 @@ export class OrderService {
         offset,
         limit,
         dropshipping,
+        stores,
       },
     }).toPromise();
   }
@@ -159,24 +184,23 @@ export class OrderService {
   }
 
   loadOrderPages(payload: any) {
+    const { token, date } = payload;
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${payload.token}`,
+      'Authorization': `Bearer ${token}`,
     };
     return this.httpService.get(process.env.APP_URL + '/api/orders/pages',
       { headers,
-        params: {
-        date: payload.date,
-      },
+        params: { date },
     }).toPromise();
   }
 
   loadPrintedOrders(payload: any) {
+    const { token, date, page, isSummary } = payload;
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${payload.token}`,
+      'Authorization': `Bearer ${token}`,
     };
-    const { date, page, isSummary } = payload;
     return this.httpService.get(process.env.APP_URL + '/api/orders/print',
       { headers,
         params: {
