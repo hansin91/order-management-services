@@ -5,17 +5,19 @@ export class ProductService {
   constructor(private readonly httpService: HttpService) {}
 
   loadProductSummary(payload: any) {
+    const { stores, status, page, token, date, shipping } = payload;
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${payload.token}`,
+      'Authorization': `Bearer ${token}`,
     };
     return this.httpService.get(process.env.APP_URL + '/api/products/summary',
       { headers,
         params: {
-        date: payload.date,
-        shipping: payload.shipping,
-        page: payload.page,
-        status: payload.status,
+        date,
+        shipping,
+        page,
+        stores,
+        status,
       },
     }).toPromise();
   }

@@ -18,11 +18,11 @@ export class StatusService {
   }
 
   loadStatusSummary(payload: any) {
+    const { stores, token, start, end, dropshipping, date, shipping, page, status } = payload;
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${payload.token}`,
+      'Authorization': `Bearer ${token}`,
     };
-    const { start, end, dropshipping, date, shipping, page, status } = payload;
     return this.httpService.get(process.env.APP_URL + '/api/status/summary',
       { headers,
         params: {
@@ -33,6 +33,7 @@ export class StatusService {
         start,
         end,
         dropshipping,
+        stores,
       },
     }).toPromise();
   }

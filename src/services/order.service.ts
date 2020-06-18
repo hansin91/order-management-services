@@ -147,11 +147,11 @@ export class OrderService {
   }
 
   loadOrders(payload: any) {
+    const { token, stores, dropshipping, offset, limit, start, end, shippingId, status, date, page, shipping } = payload;
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${payload.token}`,
+      'Authorization': `Bearer ${token}`,
     };
-    const { stores, dropshipping, offset, limit, start, end, shippingId, status, date, page, shipping } = payload;
     return this.httpService.get(process.env.APP_URL + '/api/orders',
       { headers,
         params: {

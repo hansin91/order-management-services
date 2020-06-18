@@ -43,4 +43,23 @@ export class ShippingController {
       });
     });
   }
+
+  @MessagePattern({ cmd: 'load-shipping-summary' })
+  loadStatusSummary(payload: any) {
+    const response =  this.shippingservice.loadShippingSummary(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        data: data.data,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
 }
