@@ -7,6 +7,7 @@ import {
   StatusService,
   ShippingService,
   PageService,
+  StoreService,
   ProductService,
 } from '@services';
 import {
@@ -18,6 +19,7 @@ import {
   ShippingController,
   PageController,
   ProductController,
+  StoreController,
 } from '@controllers';
 
 @Module({
@@ -29,6 +31,7 @@ import {
     OrderService,
     StatusService,
     ShippingService,
+    StoreService,
     PageService,
     ProductService,
   ],
@@ -38,6 +41,7 @@ import {
     GroupController,
     OrderController,
     StatusController,
+    StoreController,
     ShippingController,
     PageController,
     ProductController,
