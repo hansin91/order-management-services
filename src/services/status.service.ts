@@ -18,7 +18,7 @@ export class StatusService {
   }
 
   loadStatusSummary(payload: any) {
-    const { stores, token, start, end, dropshipping, date, shipping, page, status } = payload;
+    const { search, stores, token, start, end, dropshipping, date, shipping, page, status } = payload;
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
@@ -34,6 +34,7 @@ export class StatusService {
         end,
         dropshipping,
         stores,
+        search,
       },
     }).toPromise();
   }

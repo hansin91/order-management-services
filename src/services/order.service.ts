@@ -147,7 +147,7 @@ export class OrderService {
   }
 
   loadOrders(payload: any) {
-    const { token, stores, dropshipping, offset, limit, start, end, shippingId, status, date, page, shipping } = payload;
+    const { search, token, stores, dropshipping, offset, limit, start, end, shippingId, status, date, page, shipping } = payload;
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
@@ -164,6 +164,7 @@ export class OrderService {
         end,
         offset,
         limit,
+        search,
         dropshipping,
         stores,
       },

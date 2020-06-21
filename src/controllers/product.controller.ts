@@ -25,4 +25,23 @@ export class ProductController {
       });
     });
   }
+
+  @MessagePattern({ cmd: 'load-products' })
+  loadProducts(payload: any) {
+    const response =  this.productService.loadProducts(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        products: data.products,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
 }

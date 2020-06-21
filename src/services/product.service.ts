@@ -4,8 +4,24 @@ import { Injectable, HttpService } from '@nestjs/common';
 export class ProductService {
   constructor(private readonly httpService: HttpService) {}
 
+  loadProducts(payload: any) {
+    const { token, name, page, limit } = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.get(process.env.ADMIN_URL + '/api/products',
+      { headers,
+        params: {
+        name,
+        page,
+        limit,
+      },
+    }).toPromise();
+  }
+
   loadProductSummary(payload: any) {
-    const { stores, status, page, token, date, shipping } = payload;
+    const { search, stores, status, page, token, date, shipping } = payload;
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
@@ -18,6 +34,7 @@ export class ProductService {
         page,
         stores,
         status,
+        search,
       },
     }).toPromise();
   }
