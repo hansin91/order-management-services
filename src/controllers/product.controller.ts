@@ -33,6 +33,7 @@ export class ProductController {
       return {
         status: HttpStatus.OK,
         message: data.message,
+        products: data.products,
       };
     })
     .catch(err => {
