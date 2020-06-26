@@ -26,6 +26,25 @@ export class ProductController {
     });
   }
 
+  @MessagePattern({ cmd: 'set-product-group' })
+  setProductGroup(payload: any) {
+    const response =  this.productService.setProductGroup(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        message: data.message,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
   @MessagePattern({ cmd: 'load-products' })
   loadProducts(payload: any) {
     const response =  this.productService.loadProducts(payload);
@@ -33,6 +52,7 @@ export class ProductController {
       return {
         status: HttpStatus.OK,
         products: data.products,
+        total: data.total,
       };
     })
     .catch(err => {
