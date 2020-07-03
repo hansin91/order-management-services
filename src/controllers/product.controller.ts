@@ -65,4 +65,42 @@ export class ProductController {
       });
     });
   }
+
+  @MessagePattern({ cmd: 'load-product-detail' })
+  loadProductDetail(payload: any) {
+    const response =  this.productService.loadProductDetail(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        product: data.product,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
+  @MessagePattern({ cmd: 'load-product-stores' })
+  loadProductStores(payload: any) {
+    const response =  this.productService.loadProductStores(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        products: data.products,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
 }
