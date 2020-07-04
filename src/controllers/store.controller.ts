@@ -24,4 +24,23 @@ export class StoreController {
       });
     });
   }
+
+  @MessagePattern({ cmd: 'load-stores' })
+  loadStores(payload: any) {
+    const response =  this.storeService.loadStores(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        stores: data.stores,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
 }

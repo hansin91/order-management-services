@@ -14,7 +14,7 @@ export class ProductService {
   }
 
   loadProducts(payload: any) {
-    const { group, raw, token, name, page, limit } = payload;
+    const { group, product_id, raw, token, name, page, limit } = payload;
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
@@ -26,6 +26,7 @@ export class ProductService {
         page,
         raw,
         limit,
+        product_id,
         group,
       },
     }).toPromise();
