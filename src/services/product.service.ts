@@ -43,7 +43,7 @@ export class ProductService {
   }
 
   loadProductStores(payload: any) {
-    const { product_id, token } = payload;
+    const { product_id, store_id, token, search, raw } = payload;
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
@@ -52,6 +52,9 @@ export class ProductService {
       { headers,
         params: {
         product_id,
+        store_id,
+        search,
+        raw,
       },
     }).toPromise();
   }
