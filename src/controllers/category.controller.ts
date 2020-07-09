@@ -25,4 +25,23 @@ export class CategoryController {
       });
     });
   }
+
+  @MessagePattern({ cmd: 'load-categories' })
+  loadCategories(payload: any) {
+    const response =  this.categoryService.loadCategories(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        categories: data.categories,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
 }
