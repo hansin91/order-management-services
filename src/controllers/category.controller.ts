@@ -26,6 +26,25 @@ export class CategoryController {
     });
   }
 
+  @MessagePattern({ cmd: 'save-category' })
+  saveCategory(payload: any) {
+    const response =  this.categoryService.saveCategory(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        categories: data.categories,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
   @MessagePattern({ cmd: 'load-categories' })
   loadCategories(payload: any) {
     const response =  this.categoryService.loadCategories(payload);

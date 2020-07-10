@@ -5,11 +5,21 @@ export class CategoryService {
   constructor(private readonly httpService: HttpService) {}
 
   addCategory(payload: any) {
+    const { token, body } = payload;
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${payload.token}`,
+      'Authorization': `Bearer ${token}`,
     };
-    return this.httpService.post(process.env.ADMIN_URL + '/api/categories', payload.body, { headers }).toPromise();
+    return this.httpService.post(process.env.ADMIN_URL + '/api/categories', body, { headers }).toPromise();
+  }
+
+  saveCategory(payload: any) {
+    const { token, body } = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.put(process.env.ADMIN_URL + '/api/categories', body, { headers }).toPromise();
   }
 
   loadCategories(payload: any) {
