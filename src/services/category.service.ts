@@ -38,4 +38,13 @@ export class CategoryService {
     };
     return this.httpService.get(process.env.ADMIN_URL + '/api/categories/' + id , { headers }).toPromise();
   }
+
+  deleteCategory(payload: any) {
+    const { token, id } = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.delete(process.env.ADMIN_URL + '/api/categories/' + id , { headers }).toPromise();
+  }
 }

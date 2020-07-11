@@ -82,4 +82,23 @@ export class CategoryController {
       });
     });
   }
+
+  @MessagePattern({ cmd: 'delete-category' })
+  deleteCategory(payload: any) {
+    const response =  this.categoryService.deleteCategory(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        message: data.message,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
 }
