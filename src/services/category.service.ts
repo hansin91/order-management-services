@@ -23,11 +23,12 @@ export class CategoryService {
   }
 
   loadCategories(payload: any) {
+    const { token, includedParent } = payload;
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${payload.token}`,
+      'Authorization': `Bearer ${token}`,
     };
-    return this.httpService.get(process.env.ADMIN_URL + '/api/categories', { headers }).toPromise();
+    return this.httpService.get(process.env.ADMIN_URL + '/api/categories', { headers, params: { includedParent } }).toPromise();
   }
 
   loadCategory(payload: any) {

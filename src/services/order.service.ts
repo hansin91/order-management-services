@@ -23,11 +23,12 @@ export class OrderService {
   }
 
   editOrder(payload: any) {
+    const { token, body } = payload;
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${payload.token}`,
+      'Authorization': `Bearer ${token}`,
     };
-    return this.httpService.put(process.env.APP_URL + '/api/orders', payload.body, { headers }).toPromise();
+    return this.httpService.put(process.env.APP_URL + '/api/orders', body, { headers }).toPromise();
   }
 
   loadOrderShopee(payload: any) {
@@ -39,11 +40,12 @@ export class OrderService {
   }
 
   saveBulkOrder(payload: any) {
+    const { token, body } = payload;
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${payload.token}`,
+      'Authorization': `Bearer ${token}`,
     };
-    return this.httpService.post(process.env.APP_URL + '/api/orders/bulk', payload.body, { headers }).toPromise();
+    return this.httpService.post(process.env.APP_URL + '/api/orders/bulk', body, { headers }).toPromise();
   }
 
   loadOrderShippings(payload: any) {
