@@ -23,6 +23,7 @@ import {
   StoreController,
   WarehouseController,
   RoomController,
+  RackController,
 } from '@controllers';
 
 @Module({
@@ -50,6 +51,7 @@ import {
     PageController,
     WarehouseController,
     RoomController,
+    RackController,
     ProductController,
   ],
 })
