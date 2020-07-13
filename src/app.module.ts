@@ -22,6 +22,7 @@ import {
   ProductController,
   StoreController,
   WarehouseController,
+  RoomController,
 } from '@controllers';
 
 @Module({
@@ -48,6 +49,7 @@ import {
     ShippingController,
     PageController,
     WarehouseController,
+    RoomController,
     ProductController,
   ],
 })

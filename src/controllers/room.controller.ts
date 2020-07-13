@@ -3,12 +3,12 @@ import { LocationService } from '@services';
 import { MessagePattern, RpcException } from '@nestjs/microservices';
 
 @Controller()
-export class WarehouseController {
-  constructor(private readonly warehouseService: LocationService) {}
+export class RoomController {
+  constructor(private readonly roomService: LocationService) {}
 
-  @MessagePattern({ cmd: 'delete-warehouse' })
-  deleteWarehouse(payload: any) {
-    const response =  this.warehouseService.deleteWarehouse(payload);
+  @MessagePattern({ cmd: 'delete-room' })
+  deleteRoom(payload: any) {
+    const response =  this.roomService.deleteRoom(payload);
     return response.then(({ data: { message } }) => {
       return {
         status: HttpStatus.OK,
@@ -25,14 +25,14 @@ export class WarehouseController {
     });
   }
 
-  @MessagePattern({ cmd: 'create-warehouse' })
-  createWarehouse(payload: any) {
-    const response =  this.warehouseService.createWarehouse(payload);
-    return response.then(({ data: { message, newWarehouse } }) => {
+  @MessagePattern({ cmd: 'create-room' })
+  createRoom(payload: any) {
+    const response =  this.roomService.createRoom(payload);
+    return response.then(({ data: { message, newRoom } }) => {
       return {
         status: HttpStatus.OK,
         message,
-        warehouse: newWarehouse,
+        room: newRoom,
       };
     })
     .catch(err => {
@@ -45,13 +45,13 @@ export class WarehouseController {
     });
   }
 
-  @MessagePattern({ cmd: 'load-warehouses' })
-  loadWarehouses(payload: any) {
-    const response =  this.warehouseService.loadWarehouses(payload);
-    return response.then(({ data: { warehouses } }) => {
+  @MessagePattern({ cmd: 'load-rooms' })
+  loadRooms(payload: any) {
+    const response =  this.roomService.loadRooms(payload);
+    return response.then(({ data: { rooms } }) => {
       return {
         status: HttpStatus.OK,
-        warehouses,
+        rooms,
       };
     })
     .catch(err => {
