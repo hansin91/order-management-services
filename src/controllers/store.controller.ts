@@ -2,7 +2,7 @@ import { Controller, HttpStatus } from '@nestjs/common';
 import { StoreService } from '@services';
 import { MessagePattern, RpcException } from '@nestjs/microservices';
 
-@Controller('stores')
+@Controller()
 export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 

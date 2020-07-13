@@ -9,6 +9,7 @@ import {
   PageService,
   StoreService,
   ProductService,
+  LocationService,
 } from '@services';
 import {
   AuthController,
@@ -20,6 +21,7 @@ import {
   PageController,
   ProductController,
   StoreController,
+  WarehouseController,
 } from '@controllers';
 
 @Module({
@@ -33,6 +35,7 @@ import {
     ShippingService,
     StoreService,
     PageService,
+    LocationService,
     ProductService,
   ],
   controllers: [
@@ -44,6 +47,7 @@ import {
     StoreController,
     ShippingController,
     PageController,
+    WarehouseController,
     ProductController,
   ],
 })
