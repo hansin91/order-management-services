@@ -6,6 +6,25 @@ import { MessagePattern, RpcException } from '@nestjs/microservices';
 export class WarehouseController {
   constructor(private readonly warehouseService: LocationService) {}
 
+  @MessagePattern({ cmd: 'delete-warehouse' })
+  deleteWarehouse(payload: any) {
+    const response =  this.warehouseService.deletWarehouse(payload);
+    return response.then(({ data: { message } }) => {
+      return {
+        status: HttpStatus.OK,
+        message,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
   @MessagePattern({ cmd: 'create-warehouse' })
   createWarehouse(payload: any) {
     const response =  this.warehouseService.createWarehouse(payload);

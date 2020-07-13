@@ -22,4 +22,13 @@ export class LocationService {
     };
     return this.httpService.post(process.env.ADMIN_URL + '/api/warehouses', body, { headers }).toPromise();
   }
+
+  deletWarehouse(payload: any) {
+    const { token, id } = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.delete(process.env.ADMIN_URL + '/api/warehouses/' + id , { headers }).toPromise();
+  }
 }
