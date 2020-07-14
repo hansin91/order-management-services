@@ -85,4 +85,33 @@ export class LocationService {
     };
     return this.httpService.delete(process.env.ADMIN_URL + '/api/racks/' + id , { headers }).toPromise();
   }
+
+  loadLocations(payload: any) {
+    const { token, name, warehouse_id, rack_id, room_id } = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.get(process.env.ADMIN_URL + '/api/locations',
+      { headers,
+        params: { name, warehouse_id, rack_id, room_id } }).toPromise();
+  }
+
+  createLocation(payload: any) {
+    const { token, body } = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.post(process.env.ADMIN_URL + '/api/locations', body, { headers }).toPromise();
+  }
+
+  deleteLocation(payload: any) {
+    const { token, id } = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.delete(process.env.ADMIN_URL + '/api/locations/' + id , { headers }).toPromise();
+  }
 }

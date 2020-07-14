@@ -24,6 +24,7 @@ import {
   WarehouseController,
   RoomController,
   RackController,
+  LocationController,
 } from '@controllers';
 
 @Module({
@@ -53,6 +54,7 @@ import {
     RoomController,
     RackController,
     ProductController,
+    LocationController,
   ],
 })
 export class AppModule {}
