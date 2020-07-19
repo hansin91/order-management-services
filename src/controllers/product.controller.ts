@@ -104,6 +104,25 @@ export class ProductController {
     });
   }
 
+  @MessagePattern({ cmd: 'create-product-store' })
+  createProductStore(payload: any) {
+    const response =  this.productService.createProductStore(payload);
+    return response.then(({ data }) => {
+      return {
+        status: HttpStatus.OK,
+        product: data.product,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
   @MessagePattern({ cmd: 'load-product-stores' })
   loadProductStores(payload: any) {
     const response =  this.productService.loadProductStores(payload);

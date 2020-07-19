@@ -22,6 +22,15 @@ export class ProductService {
     return this.httpService.put(process.env.ADMIN_URL + '/api/products/stores', body, { headers }).toPromise();
   }
 
+  createProductStore(payload: any) {
+    const { token, body } = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.post(process.env.ADMIN_URL + '/api/products/stores', body, { headers }).toPromise();
+  }
+
   loadProducts(payload: any) {
     const { group, categories, locations, warehouses, rooms, racks, unassigned, groups, product_id, raw, token, name, page, limit } = payload;
     const headers = {
