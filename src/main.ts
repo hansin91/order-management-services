@@ -35,7 +35,28 @@ async function RabbitMQBootstrap() {
       prefetchCount: 1,
     },
   });
-  await app.listen(() => logger.log('RabbitMQ Microservice is listening'));
+  await app.listen(() => logger.log('RabbitMQ Order Microservice is listening'));
+}
+
+async function RabbitMQProductBootstrap() {
+  const PORT = Number(process.env.RABBITMQ_PORT);
+  const HOST = process.env.RABBITMQ_HOST;
+  const USERNAME =  process.env.RABBITMQ_USER;
+  const PASSWORD = process.env.RABBITMQ_PASSWORD;
+  const app = await NestFactory.createMicroservice(AppModule, {
+    transport: Transport.RMQ,
+    options: {
+      urls: ['amqp://' + USERNAME + ':' + PASSWORD + '@' + HOST + ':' + PORT],
+      queue: process.env.RABBITMQ_PRODUCT_QUEUE,
+      queueOptions: {
+        durable: false,
+      },
+      noAck: false,
+      prefetchCount: 1,
+    },
+  });
+  await app.listen(() => logger.log('RabbitMQ Product Microservice is listening'));
 }
 
 RabbitMQBootstrap();
+RabbitMQProductBootstrap();

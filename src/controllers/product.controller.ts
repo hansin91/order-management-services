@@ -1,5 +1,5 @@
 import { Controller, HttpStatus } from '@nestjs/common';
-import { MessagePattern, RpcException } from '@nestjs/microservices';
+import { MessagePattern, RpcException, Payload, Ctx, RmqContext } from '@nestjs/microservices';
 import { ProductService } from '@services';
 
 @Controller()
@@ -92,6 +92,28 @@ export class ProductController {
       return {
         status: HttpStatus.OK,
         product: data.product,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
+  @MessagePattern({ cmd: 'edit-product'})
+  editProduct(@Payload() payload: any, @Ctx() context: RmqContext ) {
+    const channel = context.getChannelRef();
+    const message = context.getMessage();
+    const response =  this.productService.editProduct(payload);
+    channel.ack(message);
+    return response.then(({ data: {product} }) => {
+      return {
+        status: HttpStatus.OK,
+        product,
       };
     })
     .catch(err => {
