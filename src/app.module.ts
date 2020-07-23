@@ -10,6 +10,7 @@ import {
   StoreService,
   ProductService,
   LocationService,
+  StockService,
   PriceService,
 } from '@services';
 import {
@@ -27,6 +28,7 @@ import {
   RackController,
   LocationController,
   PriceController,
+  StockController,
 } from '@controllers';
 
 @Module({
@@ -41,6 +43,7 @@ import {
     StoreService,
     PageService,
     LocationService,
+    StockService,
     ProductService,
     PriceService,
   ],
@@ -58,6 +61,7 @@ import {
     RackController,
     ProductController,
     PriceController,
+    StockController,
     LocationController,
   ],
 })
