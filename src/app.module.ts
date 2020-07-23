@@ -10,6 +10,7 @@ import {
   StoreService,
   ProductService,
   LocationService,
+  PriceService,
 } from '@services';
 import {
   AuthController,
@@ -25,6 +26,7 @@ import {
   RoomController,
   RackController,
   LocationController,
+  PriceController,
 } from '@controllers';
 
 @Module({
@@ -40,6 +42,7 @@ import {
     PageService,
     LocationService,
     ProductService,
+    PriceService,
   ],
   controllers: [
     AuthController,
@@ -54,6 +57,7 @@ import {
     RoomController,
     RackController,
     ProductController,
+    PriceController,
     LocationController,
   ],
 })
