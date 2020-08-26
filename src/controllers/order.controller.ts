@@ -78,17 +78,39 @@ export class OrderController {
   @MessagePattern({ cmd: 'order-shippings' })
   loadOrderShippings(payload: any) {
     const response =  this.orderService.loadOrderShippings(payload);
-    return response.then(({ data }) => {
+    return response.then(({ data: {shippings} }) => {
       return {
         status: HttpStatus.OK,
-        shippings: data.shippings,
+        shippings,
       };
     })
     .catch(err => {
+      const {response: {status, data}} = err;
       throw new RpcException({
         error: {
-          status: err.response.status,
-          message: err.response.data,
+          status,
+          message: data,
+        },
+      });
+    });
+  }
+
+  @MessagePattern({ cmd: 'uploaded-orders' })
+  loadUploadedOrders(payload: any) {
+    const response =  this.orderService.loadUploadedOrders(payload);
+    return response.then(({ data: {files, count} }) => {
+      return {
+        status: HttpStatus.OK,
+        files,
+        count,
+      };
+    })
+    .catch(err => {
+      const {response: {status, data}} = err;
+      throw new RpcException({
+        error: {
+          status,
+          message: data,
         },
       });
     });
