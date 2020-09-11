@@ -10,8 +10,7 @@ export class LocationService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     };
-    return this.httpService.get(process.env.ADMIN_URL + '/api/warehouses',
-      { headers }).toPromise();
+    return this.httpService.get(process.env.ADMIN_URL + '/api/warehouses', { headers }).toPromise();
   }
 
   createWarehouse(payload: any) {

@@ -11,12 +11,56 @@ export class OrderController {
     const channel = context.getChannelRef();
     const message = context.getMessage();
     const response =  this.orderService.saveOrder(payload);
-    channel.ack(message);
-    return response.then(({ data }) => {
+    return response.then(({ data: {order, param} }) => {
+      channel.ack(message);
       return {
         status: HttpStatus.OK,
-        data: data.order,
-        param: data.param,
+        data: order,
+        param,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
+  @MessagePattern({ cmd: 'save-mass-order'})
+  async saveMassOrder(@Payload() payload: any, @Ctx() context: RmqContext ) {
+    const channel = context.getChannelRef();
+    const message = context.getMessage();
+    const response = this.orderService.saveMassOrder(payload);
+    return response.then(({ data: {orders} }) => {
+      channel.ack(message);
+      return {
+        status: HttpStatus.OK,
+        orders,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
+  @MessagePattern({ cmd: 'update-uploaded-file'})
+  async updateFile(@Payload() payload: any, @Ctx() context: RmqContext ) {
+    const channel = context.getChannelRef();
+    const message = context.getMessage();
+    const response = this.orderService.updateFile(payload);
+    return response.then(({ data: {file} }) => {
+      channel.ack(message);
+      return {
+        status: HttpStatus.OK,
+        file,
       };
     })
     .catch(err => {
@@ -34,12 +78,12 @@ export class OrderController {
     const channel = context.getChannelRef();
     const message = context.getMessage();
     const response =  this.orderService.saveBulkOrder(payload);
-    channel.ack(message);
-    return response.then(({ data }) => {
+    return response.then(({ data: {orders, param} }) => {
+      channel.ack(message);
       return {
         status: HttpStatus.OK,
-        data: data.orders,
-        param: data.param,
+        data: orders,
+        param,
       };
     })
     .catch(err => {
