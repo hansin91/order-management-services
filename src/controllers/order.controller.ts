@@ -20,6 +20,7 @@ export class OrderController {
       };
     })
     .catch(err => {
+      console.log(err.response);
       throw new RpcException({
         error: {
           status: err.response.status,
@@ -87,6 +88,7 @@ export class OrderController {
       };
     })
     .catch(err => {
+      console.log(err.response);
       throw new RpcException({
         error: {
           status: err.response.status,
