@@ -1,6 +1,7 @@
 import { Controller, HttpStatus } from '@nestjs/common';
 import { OrderService } from '@services';
 import { RpcException, MessagePattern, Payload, Ctx, RmqContext } from '@nestjs/microservices';
+import * as jwt from 'jsonwebtoken';
 
 @Controller()
 export class OrderController {
@@ -20,7 +21,8 @@ export class OrderController {
       };
     })
     .catch(err => {
-      console.log(err.response);
+      // console.log(err.response);
+      channel.nack(message);
       throw new RpcException({
         error: {
           status: err.response.status,
@@ -34,7 +36,7 @@ export class OrderController {
   async saveMassOrder(@Payload() payload: any, @Ctx() context: RmqContext ) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
-    const response = this.orderService.saveMassOrder(payload);
+    let response = this.orderService.saveMassOrder(payload);
     return response.then(({ data: {orders} }) => {
       channel.ack(message);
       return {
@@ -43,11 +45,21 @@ export class OrderController {
       };
     })
     .catch(err => {
-      throw new RpcException({
-        error: {
-          status: err.response.status,
-          message: err.response.data,
-        },
+      const {body: {user} } = payload;
+      const payloadData = {
+        id: user.id,
+        email: user.email ? user.email : '',
+        username: user.username,
+      };
+      const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
+      payload.token = token;
+      response = this.orderService.saveMassOrder(payload);
+      return response.then(({ data: {orders} }) => {
+        channel.ack(message);
+        return {
+          status: HttpStatus.OK,
+          orders,
+        };
       });
     });
   }
@@ -65,6 +77,15 @@ export class OrderController {
       };
     })
     .catch(err => {
+      const { body: {modifiedUser} } = payload;
+      const payloadData = {
+        id: modifiedUser.id,
+        email: modifiedUser.email,
+        username: modifiedUser.username,
+      };
+      const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
+      payload.token = token;
+      this.orderService.updateFile(payload);
       throw new RpcException({
         error: {
           status: err.response.status,
@@ -78,7 +99,7 @@ export class OrderController {
   saveBulkOrder(@Payload() payload: any, @Ctx() context: RmqContext ) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
-    const response =  this.orderService.saveBulkOrder(payload);
+    let response =  this.orderService.saveBulkOrder(payload);
     return response.then(({ data: {orders, param} }) => {
       channel.ack(message);
       return {
@@ -88,12 +109,22 @@ export class OrderController {
       };
     })
     .catch(err => {
-      console.log(err.response);
-      throw new RpcException({
-        error: {
-          status: err.response.status,
-          message: err.response.data,
-        },
+      const {body: {user} } = payload;
+      const payloadData = {
+        id: user.id,
+        email: user.email ? user.email : '',
+        username: user.username,
+      };
+      const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
+      payload.token = token;
+      response =  this.orderService.saveBulkOrder(payload);
+      return response.then(({ data: {orders, param} }) => {
+        channel.ack(message);
+        return {
+          status: HttpStatus.OK,
+          data: orders,
+          param,
+        };
       });
     });
   }
