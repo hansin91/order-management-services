@@ -31,11 +31,12 @@ export class OrderController {
       const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
       payload.token = token;
       response = this.orderService.saveOrder(payload);
-      return response.then(({ data: {orders} }) => {
+      return response.then(({ data: {order, param} }) => {
         channel.ack(message);
         return {
           status: HttpStatus.OK,
-          orders,
+          data: order,
+          param,
         };
       });
     });
