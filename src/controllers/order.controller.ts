@@ -21,7 +21,7 @@ export class OrderController {
       };
     })
     .catch(err => {
-      console.log(err);
+      console.log(err.response);
       const {body: {userId, user} } = payload;
       const payloadData = {
         id: userId,
@@ -54,6 +54,7 @@ export class OrderController {
       };
     })
     .catch(err => {
+      console.log(err.response);
       const {body: {user} } = payload;
       const payloadData = {
         id: user.id,
@@ -86,6 +87,7 @@ export class OrderController {
       };
     })
     .catch(err => {
+      console.log(err.response);
       const { body: {modifiedUser} } = payload;
       const payloadData = {
         id: modifiedUser.id,
@@ -118,6 +120,7 @@ export class OrderController {
       };
     })
     .catch(err => {
+      console.log(err.response);
       const {body: {user} } = payload;
       const payloadData = {
         id: user.id,
