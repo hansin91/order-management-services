@@ -79,7 +79,7 @@ export class OrderController {
   async updateFile(@Payload() payload: any, @Ctx() context: RmqContext ) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
-    const response = this.orderService.updateFile(payload);
+    let response = this.orderService.updateFile(payload);
     return response.then(({ data: {file} }) => {
       channel.ack(message);
       return {
@@ -88,7 +88,6 @@ export class OrderController {
       };
     })
     .catch(err => {
-      console.log(payload);
       const { body: {modifiedUser} } = payload;
       const payloadData = {
         id: modifiedUser.id,
@@ -97,12 +96,14 @@ export class OrderController {
       };
       const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
       payload.token = token;
-      this.orderService.updateFile(payload);
-      throw new RpcException({
-        error: {
-          status: err.response.status,
-          message: err.response.data,
-        },
+      console.log(payload);
+      response = this.orderService.updateFile(payload);
+      return response.then(({ data: {file} }) => {
+        channel.ack(message);
+        return {
+          status: HttpStatus.OK,
+          file,
+        };
       });
     });
   }
