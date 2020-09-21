@@ -88,7 +88,7 @@ export class OrderController {
       };
     })
     .catch(err => {
-      console.log(err.response);
+      console.log(payload);
       const { body: {modifiedUser} } = payload;
       const payloadData = {
         id: modifiedUser.id,
