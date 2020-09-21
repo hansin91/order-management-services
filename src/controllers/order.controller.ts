@@ -21,7 +21,7 @@ export class OrderController {
       };
     })
     .catch(err => {
-      // console.log(err.response);
+      console.log(err.response);
       channel.nack(message);
       throw new RpcException({
         error: {
