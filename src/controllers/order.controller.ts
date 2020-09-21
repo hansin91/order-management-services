@@ -21,6 +21,7 @@ export class OrderController {
       };
     })
     .catch(err => {
+      console.log(err);
       const {body: {userId, user} } = payload;
       const payloadData = {
         id: userId,
