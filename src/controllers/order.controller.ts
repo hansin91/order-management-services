@@ -11,7 +11,7 @@ export class OrderController {
   saveOrder(@Payload() payload: any, @Ctx() context: RmqContext ) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
-    const response =  this.orderService.saveOrder(payload);
+    let response =  this.orderService.saveOrder(payload);
     return response.then(({ data: {order, param} }) => {
       channel.ack(message);
       return {
@@ -21,13 +21,21 @@ export class OrderController {
       };
     })
     .catch(err => {
-      console.log(payload);
-      channel.nack(message);
-      throw new RpcException({
-        error: {
-          status: err.response.status,
-          message: err.response.data,
-        },
+      const {body: {userId, user} } = payload;
+      const payloadData = {
+        id: userId,
+        email: '',
+        username: user ? user.username : 'master12345',
+      };
+      const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
+      payload.token = token;
+      response = this.orderService.saveOrder(payload);
+      return response.then(({ data: {orders} }) => {
+        channel.ack(message);
+        return {
+          status: HttpStatus.OK,
+          orders,
+        };
       });
     });
   }
