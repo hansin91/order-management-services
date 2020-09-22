@@ -1,11 +1,14 @@
-import { Controller, HttpStatus } from '@nestjs/common';
+import { Controller, HttpStatus, Logger } from '@nestjs/common';
 import { OrderService } from '@services';
 import { RpcException, MessagePattern, Payload, Ctx, RmqContext } from '@nestjs/microservices';
 import * as jwt from 'jsonwebtoken';
 
 @Controller()
 export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
+  private logger: Logger;
+  constructor(private readonly orderService: OrderService) {
+    this.logger = new Logger();
+  }
 
   @MessagePattern({ cmd: 'save-order'})
   saveOrder(@Payload() payload: any, @Ctx() context: RmqContext ) {
@@ -21,11 +24,11 @@ export class OrderController {
       };
     })
     .catch(err => {
-      console.log(err.response);
+      this.logger.log(err.response);
       const {body: {userId, user} } = payload;
       const payloadData = {
         id: userId,
-        email: '',
+        email: user ? (user.email ? user.email : '') : '',
         username: user ? user.username : 'master12345',
       };
       const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
@@ -55,7 +58,7 @@ export class OrderController {
       };
     })
     .catch(err => {
-      console.log(err.response);
+      this.logger.log(err.response);
       const {body: {user} } = payload;
       const payloadData = {
         id: user.id,
@@ -88,6 +91,7 @@ export class OrderController {
       };
     })
     .catch(err => {
+      this.logger.log(err.response);
       const { body: {modifiedUser} } = payload;
       const payloadData = {
         id: modifiedUser.id,
@@ -96,7 +100,6 @@ export class OrderController {
       };
       const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
       payload.token = token;
-      console.log(payload);
       response = this.orderService.updateFile(payload);
       return response.then(({ data: {file} }) => {
         channel.ack(message);
@@ -122,7 +125,7 @@ export class OrderController {
       };
     })
     .catch(err => {
-      console.log(err.response);
+      this.logger.log(err.response);
       const {body: {user} } = payload;
       const payloadData = {
         id: user.id,
