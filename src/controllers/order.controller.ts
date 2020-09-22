@@ -24,24 +24,33 @@ export class OrderController {
       };
     })
     .catch(err => {
-      this.logger.log(err.response);
-      const {body: {userId, user} } = payload;
-      const payloadData = {
-        id: userId,
-        email: user ? (user.email ? user.email : '') : '',
-        username: user ? user.username : 'master12345',
-      };
-      const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
-      payload.token = token;
-      response = this.orderService.saveOrder(payload);
-      return response.then(({ data: {order, param} }) => {
-        channel.ack(message);
-        return {
-          status: HttpStatus.OK,
-          data: order,
-          param,
+      const errorMessage = err.response.data;
+      if (errorMessage.trim() === 'Please login first') {
+        const {body: {userId, user} } = payload;
+        const payloadData = {
+          id: userId,
+          email: user ? (user.email ? user.email : '') : '',
+          username: user ? user.username : 'master12345',
         };
-      });
+        const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
+        payload.token = token;
+        response = this.orderService.saveOrder(payload);
+        return response.then(({ data: {order, param} }) => {
+          channel.ack(message);
+          return {
+            status: HttpStatus.OK,
+            data: order,
+            param,
+          };
+        });
+      } else {
+        throw new RpcException({
+          error: {
+            status: err.response.status,
+            message: err.response.data,
+          },
+        });
+      }
     });
   }
 
@@ -59,22 +68,32 @@ export class OrderController {
     })
     .catch(err => {
       this.logger.log(err.response);
-      const {body: {user} } = payload;
-      const payloadData = {
-        id: user.id,
-        email: user.email ? user.email : '',
-        username: user.username,
-      };
-      const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
-      payload.token = token;
-      response = this.orderService.saveMassOrder(payload);
-      return response.then(({ data: {orders} }) => {
-        channel.ack(message);
-        return {
-          status: HttpStatus.OK,
-          orders,
+      const errorMessage = err.response.data;
+      if (errorMessage.trim() === 'Please login first') {
+        const {body: {user} } = payload;
+        const payloadData = {
+          id: user.id,
+          email: user.email ? user.email : '',
+          username: user.username,
         };
-      });
+        const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
+        payload.token = token;
+        response = this.orderService.saveMassOrder(payload);
+        return response.then(({ data: {orders} }) => {
+          channel.ack(message);
+          return {
+            status: HttpStatus.OK,
+            orders,
+          };
+        });
+      } else {
+        throw new RpcException({
+          error: {
+            status: err.response.status,
+            message: err.response.data,
+          },
+        });
+      }
     });
   }
 
@@ -92,22 +111,32 @@ export class OrderController {
     })
     .catch(err => {
       this.logger.log(err.response);
-      const { body: {modifiedUser} } = payload;
-      const payloadData = {
-        id: modifiedUser.id,
-        email: modifiedUser.email ? modifiedUser.email : '',
-        username: modifiedUser.username,
-      };
-      const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
-      payload.token = token;
-      response = this.orderService.updateFile(payload);
-      return response.then(({ data: {file} }) => {
-        channel.ack(message);
-        return {
-          status: HttpStatus.OK,
-          file,
+      const errorMessage = err.response.data;
+      if (errorMessage.trim() === 'Please login first') {
+        const { body: {modifiedUser} } = payload;
+        const payloadData = {
+          id: modifiedUser.id,
+          email: modifiedUser.email ? modifiedUser.email : '',
+          username: modifiedUser.username,
         };
-      });
+        const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
+        payload.token = token;
+        response = this.orderService.updateFile(payload);
+        return response.then(({ data: {file} }) => {
+          channel.ack(message);
+          return {
+            status: HttpStatus.OK,
+            file,
+          };
+        });
+      } else {
+        throw new RpcException({
+          error: {
+            status: err.response.status,
+            message: err.response.data,
+          },
+        });
+      }
     });
   }
 
@@ -126,23 +155,33 @@ export class OrderController {
     })
     .catch(err => {
       this.logger.log(err.response);
-      const {body: {user} } = payload;
-      const payloadData = {
-        id: user.id,
-        email: user.email ? user.email : '',
-        username: user.username,
-      };
-      const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
-      payload.token = token;
-      response =  this.orderService.saveBulkOrder(payload);
-      return response.then(({ data: {orders, param} }) => {
-        channel.ack(message);
-        return {
-          status: HttpStatus.OK,
-          data: orders,
-          param,
+      const errorMessage = err.response.data;
+      if (errorMessage.trim() === 'Please login first') {
+        const {body: {user} } = payload;
+        const payloadData = {
+          id: user.id,
+          email: user.email ? user.email : '',
+          username: user.username,
         };
-      });
+        const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
+        payload.token = token;
+        response =  this.orderService.saveBulkOrder(payload);
+        return response.then(({ data: {orders, param} }) => {
+          channel.ack(message);
+          return {
+            status: HttpStatus.OK,
+            data: orders,
+            param,
+          };
+        });
+      } else {
+        throw new RpcException({
+          error: {
+            status: err.response.status,
+            message: err.response.data,
+          },
+        });
+      }
     });
   }
 
