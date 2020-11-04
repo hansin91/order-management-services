@@ -67,6 +67,7 @@ export class OrderController {
       };
     })
     .catch(err => {
+      this.logger.log(err.response);
       const errorMessage = err.response.data;
       if (errorMessage.trim() === 'Please login first') {
         const {body: {user} } = payload;
