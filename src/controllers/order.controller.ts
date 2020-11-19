@@ -99,8 +99,8 @@ export class OrderController {
 
   @MessagePattern({ cmd: 'update-uploaded-file'})
   async updateFile(@Payload() payload: any, @Ctx() context: RmqContext ) {
-    const channel = context.getChannelRef();
-    const message = context.getMessage();
+    let channel = context.getChannelRef();
+    let message = context.getMessage();
     let response = this.orderService.updateFile(payload);
     return response.then(({ data: {file} }) => {
       channel.ack(message);
@@ -129,6 +129,9 @@ export class OrderController {
           };
         });
       } else {
+        channel = context.getChannelRef();
+        message = context.getMessage();
+        channel.ack(message);
         throw new RpcException({
           error: {
             status: err.response.status,
