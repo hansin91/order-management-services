@@ -20,4 +20,13 @@ export class UploadedFileService {
     }).toPromise();
   }
 
+  findUploadedFile(payload: any) {
+    const {token, id} = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.get(process.env.APP_URL + '/api/orders/upload/' + id, {headers}).toPromise();
+  }
+
 }

@@ -252,6 +252,26 @@ export class OrderController {
     });
   }
 
+  @MessagePattern({ cmd: 'uploaded-file' })
+  findUploadedFile(payload: any) {
+    const response =  this.uploadedFileService.findUploadedFile(payload);
+    return response.then(({ data: {file} }) => {
+      return {
+        status: HttpStatus.OK,
+        file,
+      };
+    })
+    .catch(err => {
+      const {response: {status, data}} = err;
+      throw new RpcException({
+        error: {
+          status,
+          message: data,
+        },
+      });
+    });
+  }
+
   @MessagePattern({ cmd: 'order-stores' })
   loadOrderStores(payload: any) {
     const response =  this.orderService.loadOrderStores(payload);
