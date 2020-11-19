@@ -219,22 +219,6 @@ export class OrderService {
     }).toPromise();
   }
 
-  loadUploadedOrders(payload: any) {
-    const {token, page, limit, search} = payload;
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    };
-    return this.httpService.get(process.env.APP_URL + '/api/orders/upload',
-      { headers,
-        params: {
-        limit,
-        page,
-        search,
-      },
-    }).toPromise();
-  }
-
   saveMassOrder(payload: any) {
     const { token, body } = payload;
     const headers = {

@@ -1,12 +1,14 @@
 import { Controller, HttpStatus, Logger } from '@nestjs/common';
-import { OrderService } from '@services';
+import { OrderService, UploadedFileService } from '@services';
 import { RpcException, MessagePattern, Payload, Ctx, RmqContext } from '@nestjs/microservices';
 import * as jwt from 'jsonwebtoken';
 
 @Controller()
 export class OrderController {
   private logger: Logger;
-  constructor(private readonly orderService: OrderService) {
+  constructor(
+    private readonly uploadedFileService: UploadedFileService,
+    private readonly orderService: OrderService) {
     this.logger = new Logger();
   }
 
@@ -229,9 +231,9 @@ export class OrderController {
     });
   }
 
-  @MessagePattern({ cmd: 'uploaded-orders' })
-  loadUploadedOrders(payload: any) {
-    const response =  this.orderService.loadUploadedOrders(payload);
+  @MessagePattern({ cmd: 'uploaded-files' })
+  loadUploadedFiles(payload: any) {
+    const response =  this.uploadedFileService.loadUploadedFiles(payload);
     return response.then(({ data: {files, count} }) => {
       return {
         status: HttpStatus.OK,

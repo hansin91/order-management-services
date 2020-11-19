@@ -12,6 +12,7 @@ import {
   LocationService,
   StockService,
   PriceService,
+  UploadedFileService,
 } from '@services';
 import {
   AuthController,
@@ -46,6 +47,7 @@ import {
     StockService,
     ProductService,
     PriceService,
+    UploadedFileService,
   ],
   controllers: [
     AuthController,
