@@ -99,11 +99,11 @@ export class OrderController {
     });
   }
 
-  @MessagePattern({ cmd: 'update-uploaded-file'})
+  @MessagePattern({cmd: 'start-mass-order'})
   async updateFile(@Payload() payload: any, @Ctx() context: RmqContext ) {
     let channel = context.getChannelRef();
     let message = context.getMessage();
-    let response = this.orderService.updateFile(payload);
+    let response = this.orderService.startMassOrder(payload);
     return response.then(({ data: {file} }) => {
       channel.ack(message);
       return {
@@ -122,7 +122,7 @@ export class OrderController {
         };
         const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
         payload.token = token;
-        response = this.orderService.updateFile(payload);
+        response = this.orderService.startMassOrder(payload);
         return response.then(({ data: {file} }) => {
           channel.ack(message);
           return {
@@ -252,6 +252,20 @@ export class OrderController {
     });
   }
 
+  @MessagePattern({ cmd: 'delete-uploaded-file' })
+  deleteUploadedFile(payload: any) {
+    const response =  this.uploadedFileService.deleteUploadedFile(payload);
+    return response.then(({ data: {id, message} }) => {
+      return {status: HttpStatus.OK, id, message};
+    })
+    .catch(err => {
+      const {response: {status, data}} = err;
+      throw new RpcException({
+        error: {status, message: data},
+      });
+    });
+  }
+
   @MessagePattern({ cmd: 'uploaded-file' })
   findUploadedFile(payload: any) {
     const response =  this.uploadedFileService.findUploadedFile(payload);
@@ -268,6 +282,23 @@ export class OrderController {
           status,
           message: data,
         },
+      });
+    });
+  }
+
+  @MessagePattern({ cmd: 'update-uploaded-file' })
+  updateUploadedFile(payload: any) {
+    const response =  this.uploadedFileService.updateUploadedFile(payload);
+    return response.then(({ data: {file} }) => {
+      return {
+        status: HttpStatus.OK,
+        file,
+      };
+    })
+    .catch(err => {
+      const {response: {status, data}} = err;
+      throw new RpcException({
+        error: {status, message: data},
       });
     });
   }

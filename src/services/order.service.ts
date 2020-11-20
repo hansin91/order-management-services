@@ -228,13 +228,13 @@ export class OrderService {
     return this.httpService.post(process.env.APP_URL + '/api/orders/mass', body, { headers }).toPromise();
   }
 
-  updateFile(payload: any) {
+  startMassOrder(payload: any) {
     const { token, body } = payload;
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     };
-    return this.httpService.patch(process.env.APP_URL + '/api/orders/upload', body, { headers }).toPromise();
+    return this.httpService.patch(process.env.APP_URL + '/api/orders/mass', body, { headers }).toPromise();
   }
 
 }

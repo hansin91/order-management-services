@@ -29,4 +29,22 @@ export class UploadedFileService {
     return this.httpService.get(process.env.APP_URL + '/api/orders/upload/' + id, {headers}).toPromise();
   }
 
+  updateUploadedFile(payload: any) {
+    const {token, id, body} = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.patch(process.env.APP_URL + '/api/orders/upload/' + id, body, {headers}).toPromise();
+  }
+
+  deleteUploadedFile(payload: any) {
+    const {token, id} = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.delete(process.env.APP_URL + '/api/orders/upload/' + id, {headers}).toPromise();
+  }
+
 }
