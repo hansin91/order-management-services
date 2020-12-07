@@ -49,11 +49,11 @@ export class ProductController {
   @MessagePattern({ cmd: 'load-products' })
   loadProducts(payload: any) {
     const response =  this.productService.loadProducts(payload);
-    return response.then(({ data }) => {
+    return response.then(({ data: {products, total} }) => {
       return {
         status: HttpStatus.OK,
-        products: data.products,
-        total: data.total,
+        products,
+        total,
       };
     })
     .catch(err => {
