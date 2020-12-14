@@ -38,7 +38,7 @@ async function RabbitMQBootstrap() {
   await app.listen(() => logger.log('RabbitMQ Order Microservice is listening'));
 }
 
-async function RabbitMQProductBootstrap() {
+async function RabbitMQUploadedOrdersBootstrap() {
   const PORT = Number(process.env.RABBITMQ_PORT);
   const HOST = process.env.RABBITMQ_HOST;
   const USERNAME =  process.env.RABBITMQ_USER;
@@ -47,7 +47,7 @@ async function RabbitMQProductBootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: ['amqp://' + USERNAME + ':' + PASSWORD + '@' + HOST + ':' + PORT],
-      queue: process.env.RABBITMQ_PRODUCT_QUEUE,
+      queue: process.env.RABBITMQ_UPLOADED_ORDER_QUEUE,
       queueOptions: {
         durable: false,
       },
@@ -55,8 +55,8 @@ async function RabbitMQProductBootstrap() {
       prefetchCount: 1,
     },
   });
-  await app.listen(() => logger.log('RabbitMQ Product Microservice is listening'));
+  await app.listen(() => logger.log('RabbitMQ Uploaded Orders Microservice is listening'));
 }
 
 RabbitMQBootstrap();
-RabbitMQProductBootstrap();
+RabbitMQUploadedOrdersBootstrap();

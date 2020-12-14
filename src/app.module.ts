@@ -10,9 +10,9 @@ import {
   StoreService,
   ProductService,
   LocationService,
-  StockService,
   PriceService,
   UploadedFileService,
+  UploadedOrderService,
 } from '@services';
 import {
   AuthController,
@@ -29,7 +29,7 @@ import {
   RackController,
   LocationController,
   PriceController,
-  StockController,
+  UploadedOrderController,
 } from '@controllers';
 
 @Module({
@@ -44,10 +44,10 @@ import {
     StoreService,
     PageService,
     LocationService,
-    StockService,
     ProductService,
     PriceService,
     UploadedFileService,
+    UploadedOrderService,
   ],
   controllers: [
     AuthController,
@@ -63,8 +63,8 @@ import {
     RackController,
     ProductController,
     PriceController,
-    StockController,
     LocationController,
+    UploadedOrderController,
   ],
 })
 export class AppModule {}
