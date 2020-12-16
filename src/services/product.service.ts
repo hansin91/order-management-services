@@ -84,6 +84,23 @@ export class ProductService {
     }).toPromise();
   }
 
+  loadUnmappedProducts(payload: any) {
+    const { name, page, token, limit, groupId } = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.get(process.env.ADMIN_URL + '/api/products/unmapped',
+      { headers,
+        params: {
+        name,
+        page,
+        limit,
+        groupId,
+      },
+    }).toPromise();
+  }
+
   loadProductSummary(payload: any) {
     const { search, stores, status, page, token, date, shipping } = payload;
     const headers = {

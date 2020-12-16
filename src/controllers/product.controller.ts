@@ -6,6 +6,17 @@ import { ProductService } from '@services';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @MessagePattern({ cmd: 'load-unmapped-products' })
+  loadUnmappedProducts(payload: any) {
+    const response =  this.productService.loadUnmappedProducts(payload);
+    return response.then(({ data: {products, count} }) => {
+      return { status: HttpStatus.OK, products, count };
+    })
+    .catch(err => {
+      throw new RpcException({ error: { status: err.response.status, message: err.response.data }});
+    });
+  }
+
   @MessagePattern({ cmd: 'load-product-summary' })
   loadProductSummary(payload: any) {
     const response =  this.productService.loadProductSummary(payload);
