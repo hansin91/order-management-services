@@ -31,6 +31,15 @@ export class ProductService {
     return this.httpService.post(process.env.ADMIN_URL + '/api/products/stores', body, { headers }).toPromise();
   }
 
+  mappingProducts(payload: any) {
+    const { token, body } = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.post(process.env.ADMIN_URL + '/api/products/mapped', body, { headers }).toPromise();
+  }
+
   loadProducts(payload: any) {
     const { group, bulk, categories, locations, warehouses, rooms, racks, unassigned, groups, id, raw, token, name, page, limit, ids } = payload;
     const headers = {

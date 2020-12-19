@@ -57,6 +57,25 @@ export class ProductController {
     });
   }
 
+  @MessagePattern({ cmd: 'mapping-products' })
+  mappingProducts(payload: any) {
+    const response =  this.productService.mappingProducts(payload);
+    return response.then(({ data: {message} }) => {
+      return {
+        status: HttpStatus.OK,
+        message,
+      };
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
   @MessagePattern({ cmd: 'load-products' })
   loadProducts(payload: any) {
     const response =  this.productService.loadProducts(payload);
