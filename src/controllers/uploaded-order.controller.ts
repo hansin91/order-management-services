@@ -1,13 +1,13 @@
 import * as jwt from 'jsonwebtoken';
 import { Controller, HttpStatus } from '@nestjs/common';
-import { Ctx, MessagePattern, Payload, RmqContext, RpcException } from '@nestjs/microservices';
+import { Ctx, EventPattern, Payload, RmqContext, RpcException } from '@nestjs/microservices';
 import { UploadedOrderService } from '@services';
 
 @Controller()
 export class UploadedOrderController {
   constructor(private readonly uploadedOrderService: UploadedOrderService) {}
 
-  @MessagePattern({ cmd: 'create-uploaded-orders'})
+  @EventPattern('create-uploaded-orders')
   createUploadedOrders(@Payload() payload: any, @Ctx() context: RmqContext ) {
     const channel = context.getChannelRef();
     const message = context.getMessage();

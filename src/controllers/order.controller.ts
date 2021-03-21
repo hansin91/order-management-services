@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import { Controller, HttpStatus, Logger } from '@nestjs/common';
-import { RpcException, MessagePattern, Payload, Ctx, RmqContext } from '@nestjs/microservices';
+import { RpcException, MessagePattern, Payload, Ctx, RmqContext, EventPattern } from '@nestjs/microservices';
 import { OrderService, UploadedFileService } from '@services';
 
 @Controller()
@@ -12,7 +12,7 @@ export class OrderController {
     this.logger = new Logger();
   }
 
-  @MessagePattern({ cmd: 'save-order'})
+  @EventPattern('save-order')
   saveOrder(@Payload() payload: any, @Ctx() context: RmqContext ) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
@@ -56,7 +56,7 @@ export class OrderController {
     });
   }
 
-  @MessagePattern({ cmd: 'save-mass-order'})
+  @EventPattern('save-mass-order')
   async saveMassOrder(@Payload() payload: any, @Ctx() context: RmqContext ) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
@@ -99,7 +99,7 @@ export class OrderController {
     });
   }
 
-  @MessagePattern({cmd: 'start-mass-order'})
+  @EventPattern('start-mass-order')
   async updateFile(@Payload() payload: any, @Ctx() context: RmqContext ) {
     let channel = context.getChannelRef();
     let message = context.getMessage();
@@ -144,7 +144,7 @@ export class OrderController {
     });
   }
 
-  @MessagePattern({ cmd: 'save-bulk-order'})
+  @EventPattern('save-bulk-order')
   saveBulkOrder(@Payload() payload: any, @Ctx() context: RmqContext ) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
