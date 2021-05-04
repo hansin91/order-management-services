@@ -24,7 +24,7 @@ export class UploadedOrderController {
     })
     .catch(err => {
       const errorMessage = err.response.data;
-      this.logger.log('.....', payload);
+      this.logger.log(payload);
       if (errorMessage.trim() === 'Please login first') {
         const {body: {file: {modifiedUser}} } = payload;
         const payloadData = {
