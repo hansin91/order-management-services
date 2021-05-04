@@ -1,11 +1,14 @@
 import * as jwt from 'jsonwebtoken';
-import { Controller, HttpStatus } from '@nestjs/common';
+import { Controller, HttpStatus, Logger } from '@nestjs/common';
 import { Ctx, EventPattern, Payload, RmqContext, RpcException } from '@nestjs/microservices';
 import { UploadedOrderService } from '@services';
 
 @Controller()
 export class UploadedOrderController {
-  constructor(private readonly uploadedOrderService: UploadedOrderService) {}
+  private logger: Logger;
+  constructor(private readonly uploadedOrderService: UploadedOrderService) {
+    this.logger = new Logger();
+  }
 
   @EventPattern('create-uploaded-orders')
   createUploadedOrders(@Payload() payload: any, @Ctx() context: RmqContext ) {
@@ -21,6 +24,7 @@ export class UploadedOrderController {
     })
     .catch(err => {
       const errorMessage = err.response.data;
+      this.logger.log(err.response);
       if (errorMessage.trim() === 'Please login first') {
         const {body: {file: {modifiedUser}} } = payload;
         const payloadData = {
