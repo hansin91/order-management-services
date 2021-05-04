@@ -24,11 +24,10 @@ export class UploadedOrderController {
     })
     .catch(err => {
       const errorMessage = err.response.data;
-      this.logger.log(payload);
       if (errorMessage.trim() === 'Please login first') {
-        const {body: {file: {modifiedUser}} } = payload;
+        const {body: {file: {modifiedUser, modifiedUserId}} } = payload;
         const payloadData = {
-          id: modifiedUser.id,
+          id: modifiedUserId,
           email: modifiedUser ? (modifiedUser.email ? modifiedUser.email : '') : '',
           username: modifiedUser ? modifiedUser.username : 'master12345',
         };
