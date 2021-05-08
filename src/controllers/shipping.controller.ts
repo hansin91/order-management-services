@@ -28,10 +28,26 @@ export class ShippingController {
   @MessagePattern({ cmd: 'load-shipping-orders' })
   loadShippingOrders(payload: any) {
     const response =  this.shippingservice.loadShippingOrders(payload);
-    return response.then(({ data }) => {
+    return response.then(({ data: {shippings, trackings} }) => {
+      return {status: HttpStatus.OK, shippings, trackings};
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
+  @MessagePattern({ cmd: 'load-shopee-shippings' })
+  loadShopeeShippings(payload: any) {
+    const response =  this.shippingservice.loadShopeeShippings(payload);
+    return response.then(({ data: {logistics} }) => {
       return {
         status: HttpStatus.OK,
-        shippings: data.shippings,
+        shippings: logistics,
       };
     })
     .catch(err => {

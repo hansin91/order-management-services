@@ -18,13 +18,15 @@ export class ShippingService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     };
-    return this.httpService.get(process.env.APP_URL + '/api/shippings/orders',
-    { headers,
-      params: {
-        date,
-        pages,
-        shipping,
-      },
-    }).toPromise();
+    return this.httpService.get(process.env.APP_URL + '/api/shippings/orders', { headers, params: { date, pages, shipping }}).toPromise();
+  }
+
+  loadShopeeShippings(payload: any) {
+    const { token, testing } = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.get(process.env.ADMIN_URL + '/api/shippings/shopee', { headers, params: { testing }}).toPromise();
   }
 }
