@@ -29,4 +29,13 @@ export class ShippingService {
     };
     return this.httpService.get(process.env.ADMIN_URL + '/api/shippings/shopee', { headers, params: { testing }}).toPromise();
   }
+
+  loadShippingMessage(payload: any) {
+    const {token, orderNumber} = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.get(process.env.APP_URL + '/api/shippings/' + orderNumber + '/message', {headers}).toPromise();
+  }
 }

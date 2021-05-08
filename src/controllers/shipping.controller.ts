@@ -9,11 +9,8 @@ export class ShippingController {
   @MessagePattern({ cmd: 'load-shippings' })
   loadShippings(payload: any) {
     const response =  this.shippingservice.loadShippings(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        shippings: data.shippings,
-      };
+    return response.then(({ data: {shippings} }) => {
+      return {status: HttpStatus.OK, shippings};
     })
     .catch(err => {
       throw new RpcException({
@@ -45,10 +42,23 @@ export class ShippingController {
   loadShopeeShippings(payload: any) {
     const response =  this.shippingservice.loadShopeeShippings(payload);
     return response.then(({ data: {logistics} }) => {
-      return {
-        status: HttpStatus.OK,
-        shippings: logistics,
-      };
+      return {status: HttpStatus.OK, shippings: logistics};
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
+  @MessagePattern({cmd: 'load-shipping-message'})
+  loadShippingMessage(payload: any) {
+    const response =  this.shippingservice.loadShippingMessage(payload);
+    return response.then(({ data: {message} }) => {
+      return {status: HttpStatus.OK, message};
     })
     .catch(err => {
       throw new RpcException({

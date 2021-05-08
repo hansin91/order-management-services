@@ -9,11 +9,8 @@ export class PageController {
   @MessagePattern({ cmd: 'lock-date' })
   lockDate(payload: any) {
     const response =  this.pageService.lockDate(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        date: data.date,
-      };
+    return response.then(({ data: {date} }) => {
+      return {status: HttpStatus.OK, date};
     })
     .catch(err => {
       throw new RpcException({
