@@ -215,10 +215,7 @@ export class OrderController {
   loadOrderShippings(payload: any) {
     const response =  this.orderService.loadOrderShippings(payload);
     return response.then(({ data: {shippings} }) => {
-      return {
-        status: HttpStatus.OK,
-        shippings,
-      };
+      return {status: HttpStatus.OK, shippings};
     })
     .catch(err => {
       const {response: {status, data}} = err;
@@ -270,10 +267,7 @@ export class OrderController {
   findUploadedFile(payload: any) {
     const response =  this.uploadedFileService.findUploadedFile(payload);
     return response.then(({ data: {file} }) => {
-      return {
-        status: HttpStatus.OK,
-        file,
-      };
+      return {status: HttpStatus.OK, file};
     })
     .catch(err => {
       const {response: {status, data}} = err;
@@ -290,10 +284,7 @@ export class OrderController {
   updateUploadedFile(payload: any) {
     const response =  this.uploadedFileService.updateUploadedFile(payload);
     return response.then(({ data: {file} }) => {
-      return {
-        status: HttpStatus.OK,
-        file,
-      };
+      return {status: HttpStatus.OK, file};
     })
     .catch(err => {
       const {response: {status, data}} = err;
@@ -306,11 +297,8 @@ export class OrderController {
   @MessagePattern({ cmd: 'order-stores' })
   loadOrderStores(payload: any) {
     const response =  this.orderService.loadOrderStores(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        stores: data.stores,
-      };
+    return response.then(({ data: {stores} }) => {
+      return {status: HttpStatus.OK, stores};
     })
     .catch(err => {
       throw new RpcException({
@@ -325,11 +313,8 @@ export class OrderController {
   @MessagePattern({ cmd: 'order-dropshipping' })
   loadOrderDropshipping(payload: any) {
     const response =  this.orderService.loadOrderDropshipping(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        dropshipping: data.dropshipping,
-      };
+    return response.then(({ data: {dropshipping} }) => {
+      return {status: HttpStatus.OK, dropshipping};
     })
     .catch(err => {
       throw new RpcException({
@@ -344,11 +329,8 @@ export class OrderController {
   @MessagePattern({ cmd: 'orders' })
   loadOrders(payload: any) {
     const response =  this.orderService.loadOrders(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        orders: data.orders,
-      };
+    return response.then(({ data: {orders, logisticMessages} }) => {
+      return {status: HttpStatus.OK, orders, logisticMessages};
     })
     .catch(err => {
       throw new RpcException({
@@ -363,11 +345,8 @@ export class OrderController {
   @MessagePattern({ cmd: 'orders-shopee' })
   loadOrderShopee(payload: any) {
     const response =  this.orderService.loadOrderShopee(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        result: data.result,
-      };
+    return response.then(({ data: {result} }) => {
+      return {status: HttpStatus.OK, result};
     })
     .catch(err => {
       throw new RpcException({
@@ -382,11 +361,8 @@ export class OrderController {
   @MessagePattern({ cmd: 'order-total' })
   loadTotalOrderTotalPage(payload: any) {
     const response =  this.orderService.loadTotalOrderTotalPage(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        total: data.total,
-      };
+    return response.then(({ data: {total} }) => {
+      return {status: HttpStatus.OK, total};
     })
     .catch(err => {
       throw new RpcException({
@@ -401,11 +377,8 @@ export class OrderController {
   @MessagePattern({ cmd: 'order-status' })
   loadOrderStatus(payload: any) {
     const response =  this.orderService.loadOrderStatus(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        list: data.list,
-      };
+    return response.then(({ data: {list} }) => {
+      return {status: HttpStatus.OK, list};
     })
     .catch(err => {
       throw new RpcException({
@@ -420,11 +393,8 @@ export class OrderController {
   @MessagePattern({ cmd: 'order-locked' })
   loadOrderLocked(payload: any) {
     const response =  this.orderService.loadOrderLocked(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        date: data.date,
-      };
+    return response.then(({ data: {date} }) => {
+      return {status: HttpStatus.OK, date};
     })
     .catch(err => {
       throw new RpcException({
@@ -439,11 +409,8 @@ export class OrderController {
   @MessagePattern({ cmd: 'order-pages' })
   loadOrderPages(payload: any) {
     const response =  this.orderService.loadOrderPages(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        pages: data.pages,
-      };
+    return response.then(({ data: {pages} }) => {
+      return {status: HttpStatus.OK, pages};
     })
     .catch(err => {
       throw new RpcException({
@@ -458,11 +425,8 @@ export class OrderController {
   @MessagePattern({ cmd: 'order-print' })
   loadPrintedOrders(payload: any) {
     const response =  this.orderService.loadPrintedOrders(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        print: data.print,
-      };
+    return response.then(({ data: {print} }) => {
+      return {status: HttpStatus.OK, print};
     })
     .catch(err => {
       throw new RpcException({
@@ -477,11 +441,8 @@ export class OrderController {
   @MessagePattern({ cmd: 'print-orders' })
   printOrders(payload: any) {
     const response =  this.orderService.printOrders(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        orders: data.orders,
-      };
+    return response.then(({ data: {orders} }) => {
+      return {status: HttpStatus.OK, orders};
     })
     .catch(err => {
       throw new RpcException({
