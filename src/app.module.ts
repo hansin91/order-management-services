@@ -13,7 +13,6 @@ import {
   PriceService,
   UploadedFileService,
   UploadedOrderService,
-  ShopeeService,
 } from '@services';
 import {
   AuthController,
@@ -49,7 +48,6 @@ import {
     PriceService,
     UploadedFileService,
     UploadedOrderService,
-    ShopeeService,
   ],
   controllers: [
     AuthController,

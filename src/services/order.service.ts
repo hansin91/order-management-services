@@ -237,4 +237,22 @@ export class OrderService {
     return this.httpService.patch(process.env.APP_URL + '/api/orders/mass', body, { headers }).toPromise();
   }
 
+  processMassOrderDetail(payload: any) {
+    const {token, body} = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.post(process.env.APP_URL + '/api/orders/details/mass', body, { headers }).toPromise();
+  }
+
+  insertOrderDetails(payload: any) {
+    const {token, body} = payload;
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+    return this.httpService.post(process.env.APP_URL + '/api/orders/details', body, { headers }).toPromise();
+  }
+
 }

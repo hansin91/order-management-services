@@ -11,4 +11,3 @@ export * from './location.service';
 export * from './price.service';
 export * from './uploaded-file.service';
 export * from './uploaded-order.service';
-export * from './shopee.service';

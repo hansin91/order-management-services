@@ -453,4 +453,62 @@ export class OrderController {
       });
     });
   }
+
+  @MessagePattern({ cmd: 'mass-order-detail' })
+  processMassOrderDetail(payload: any) {
+    const response =  this.orderService.processMassOrderDetail(payload);
+    return response.then(({ data: {orders} }) => {
+      return {status: HttpStatus.OK, orders};
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
+  @EventPattern('insert-order-detail')
+  insertOrderDetail(@Payload() payload: any, @Ctx() context: RmqContext ) {
+    const channel = context.getChannelRef();
+    const message = context.getMessage();
+    let response =  this.orderService.insertOrderDetails(payload);
+    return response.then(({ data: {orders} }) => {
+      channel.ack(message);
+      return {
+        status: HttpStatus.OK,
+        data: orders,
+      };
+    })
+    .catch(err => {
+      const errorMessage = err.response.data;
+      if (errorMessage.trim() === 'Please login first') {
+        const {body: {user} } = payload;
+        const payloadData = {
+          id: user.id,
+          email: user.email ? user.email : '',
+          username: user.username,
+        };
+        const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
+        payload.token = token;
+        response =  this.orderService.insertOrderDetails(payload);
+        return response.then(({ data: {orders} }) => {
+          channel.ack(message);
+          return {
+            status: HttpStatus.OK,
+            data: orders,
+          };
+        });
+      } else {
+        throw new RpcException({
+          error: {
+            status: err.response.status,
+            message: err.response.data,
+          },
+        });
+      }
+    });
+  }
 }
