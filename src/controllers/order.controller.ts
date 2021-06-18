@@ -71,6 +71,8 @@ export class OrderController {
     .catch(err => {
       this.logger.log(err.response);
       const errorMessage = err.response.data;
+      console.log(err.response, '-----$$$$$-----');
+      console.log(errorMessage, '------');
       if (errorMessage.trim() === 'Please login first') {
         console.log('....here.....');
         const {body: {user} } = payload;
