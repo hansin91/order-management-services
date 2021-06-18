@@ -69,7 +69,8 @@ export class OrderController {
       };
     })
     .catch(err => {
-      console.log(err);
+      console.log(err.respons, '$$$$$$$$$$$$');
+      console.log(err.response.data, '------------');
       this.logger.log(err.response);
       const errorMessage = err.response.data;
       if (errorMessage.trim() === 'Please login first') {
