@@ -69,7 +69,6 @@ export class OrderController {
       };
     })
     .catch(err => {
-      this.logger.log(err.response);
       const errorMessage = err.response.data;
       console.log(err.response, '-----$$$$$-----');
       console.log(errorMessage, '------');
