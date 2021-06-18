@@ -72,13 +72,14 @@ export class OrderController {
       this.logger.log(err.response);
       const errorMessage = err.response.data;
       if (errorMessage.trim() === 'Please login first') {
+        console.log('....here.....');
         const {body: {user} } = payload;
+        console.log(payload);
         const payloadData = {
           id: user.id,
           email: user.email ? user.email : '',
           username: user.username,
         };
-        console.log(payloadData);
         const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
         payload.token = token;
         response = this.orderService.saveMassOrder(payload);
