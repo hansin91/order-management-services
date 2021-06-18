@@ -70,12 +70,8 @@ export class OrderController {
     })
     .catch(err => {
       const errorMessage = err.response.data;
-      console.log(err.response, '-----$$$$$-----');
-      console.log(errorMessage, '------');
       if (errorMessage.trim() === 'Please login first') {
-        console.log('....here.....');
         const {body: {user} } = payload;
-        console.log(payload);
         const payloadData = {
           id: user.id,
           email: user.email ? user.email : '',
