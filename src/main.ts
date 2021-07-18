@@ -29,7 +29,7 @@ async function RabbitMQBootstrap() {
       urls: ['amqp://' + USERNAME + ':' + PASSWORD + '@' + HOST + ':' + PORT],
       queue: process.env.RABBITMQ_QUEUE,
       queueOptions: {
-        durable: false,
+        durable: true,
       },
       noAck: false,
       prefetchCount: 1,
@@ -49,7 +49,7 @@ async function RabbitMQUploadedOrdersBootstrap() {
       urls: ['amqp://' + USERNAME + ':' + PASSWORD + '@' + HOST + ':' + PORT],
       queue: process.env.RABBITMQ_UPLOADED_ORDER_QUEUE,
       queueOptions: {
-        durable: false,
+        durable: true,
       },
       noAck: false,
       prefetchCount: 1,
@@ -69,7 +69,7 @@ async function RabbitMQOrderDetailBootstrap() {
       urls: ['amqp://' + USERNAME + ':' + PASSWORD + '@' + HOST + ':' + PORT],
       queue: process.env.RABBITMQ_ORDER_DETAIL_QUEUE,
       queueOptions: {
-        durable: false,
+        durable: true,
       },
       noAck: false,
       prefetchCount: 1,
