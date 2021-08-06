@@ -57,7 +57,7 @@ export class OrderController {
   }
 
   @EventPattern('save-mass-order')
-  async saveMassOrder(@Payload() payload: any, @Ctx() context: RmqContext ) {
+  async saveMassOrder(@Payload() payload: any, @Ctx() context: RmqContext) {
     const channel = context.getChannelRef();
     const message = context.getMessage();
     let response = this.orderService.saveMassOrder(payload);
