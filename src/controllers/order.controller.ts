@@ -32,7 +32,7 @@ export class OrderController {
         const payloadData = {
           id: userId,
           email: user ? (user.email ? user.email : '') : '',
-          username: user ? user.username : 'master12345',
+          username: user ? user.username : '',
         };
         const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
         payload.token = token;
