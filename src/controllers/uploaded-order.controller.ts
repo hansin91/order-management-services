@@ -1,13 +1,13 @@
-import * as jwt from 'jsonwebtoken';
-import { Controller, HttpStatus, Logger } from '@nestjs/common';
-import { Ctx, EventPattern, Payload, RmqContext, RpcException } from '@nestjs/microservices';
-import { UploadedOrderService } from '@services';
+  import * as jwt from 'jsonwebtoken'
+import { Controller, HttpStatus, Logger } from '@nestjs/common'
+import { Ctx, EventPattern, Payload, RmqContext, RpcException } from '@nestjs/microservices'
+import { UploadedOrderService } from '@services'
 
 @Controller()
 export class UploadedOrderController {
   private logger: Logger;
   constructor(private readonly uploadedOrderService: UploadedOrderService) {
-    this.logger = new Logger();
+    this.logger = new Logger()
   }
 
   @EventPattern('create-uploaded-orders')

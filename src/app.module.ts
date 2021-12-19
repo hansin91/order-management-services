@@ -1,4 +1,5 @@
 import { Module, HttpModule } from '@nestjs/common';
+import { BullModule  } from '@nestjs/bull'
 import {
   AuthService,
   CategoryService,
@@ -31,9 +32,21 @@ import {
   PriceController,
   UploadedOrderController,
 } from '@controllers';
+import { UploadConsumer, FileConsumer, OrderConsumer } from './consumer'
+import { Queue } from './queue'
 
 @Module({
-  imports: [HttpModule],
+  imports: [
+    HttpModule,
+    BullModule.forRoot({
+      ...Queue
+    }),
+    BullModule.registerQueue(
+      {name: 'file-queue'},
+      {name: 'upload-queue'},
+      {name: 'order-queue'}
+    ),
+  ],
   providers: [
     AuthService,
     CategoryService,
@@ -48,6 +61,9 @@ import {
     PriceService,
     UploadedFileService,
     UploadedOrderService,
+    FileConsumer,
+    OrderConsumer,
+    UploadConsumer
   ],
   controllers: [
     AuthController,

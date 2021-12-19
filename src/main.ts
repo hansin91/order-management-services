@@ -4,17 +4,17 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
 
-const logger = new Logger();
-
+const logger = new Logger()
 async function TCPBootstrap() {
+  const PORT = Number(process.env.PORT)
   const app = await NestFactory.createMicroservice(AppModule, {
     transport: Transport.TCP,
     options: {
       host: process.env.HOST,
-      port: Number(process.env.PORT),
+      port: PORT,
     },
   });
-  app.listen(() => logger.log('TCP Microservice is listening'));
+  app.listen(() => logger.log('TCP Microservice is listening on port '+ PORT));
 }
 
 async function AmpOrder() {
@@ -65,26 +65,3 @@ async function AmpUploadFile() {
 TCPBootstrap()
 AmpOrder()
 AmpUploadFile()
-
-// async function RabbitMQOrderDetailBootstrap() {
-//   const PORT = Number(process.env.RABBITMQ_PORT);
-//   const HOST = process.env.RABBITMQ_HOST;
-//   const USERNAME =  process.env.RABBITMQ_USER;
-//   const PASSWORD = process.env.RABBITMQ_PASSWORD;
-//   const app = await NestFactory.createMicroservice(AppModule, {
-//     transport: Transport.RMQ,
-//     options: {
-//       urls: ['amqp://' + USERNAME + ':' + PASSWORD + '@' + HOST + ':' + PORT],
-//       queue: process.env.RABBITMQ_ORDER_DETAIL_QUEUE,
-//       queueOptions: {
-//         durable: true
-//         // exclusive: true,
-//         // autoDelete: true
-//       },
-//       noAck: false,
-//       prefetchCount: 1,
-//     },
-//   });
-//   await app.listen(() => logger.log('RabbitMQ Order Detail Microservice is listening'));
-// }
-// RabbitMQOrderDetailBootstrap();
