@@ -148,7 +148,6 @@ export class OrderController {
     const channel = context.getChannelRef();
     const message = context.getMessage();
     let response =  this.orderService.saveBulkOrder(payload);
-    console.log(payload)
     return response.then(({ data: {orders, param} }) => {
       channel.ack(message);
       return {
