@@ -204,19 +204,16 @@ export class OrderService {
   }
 
   loadPrintedOrders(payload: any) {
-    const { token, date, page, isSummary } = payload;
+    const { token, date, page, isSummary, type } = payload;
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     };
-    return this.httpService.get(process.env.APP_URL + '/api/orders/print',
-      { headers,
-        params: {
-        date,
-        page,
-        isSummary,
-      },
-    }).toPromise();
+    const params = {date, page, isSummary} as any
+    if (type) {
+      params.type = type
+    }
+    return this.httpService.get(process.env.APP_URL + '/api/orders/print', { headers, params }).toPromise();
   }
 
   saveMassOrder(payload: any) {
