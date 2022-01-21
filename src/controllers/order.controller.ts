@@ -148,6 +148,7 @@ export class OrderController {
     const channel = context.getChannelRef();
     const message = context.getMessage();
     let response =  this.orderService.saveBulkOrder(payload);
+    console.log(payload)
     return response.then(({ data: {orders, param} }) => {
       channel.ack(message);
       return {
@@ -158,6 +159,8 @@ export class OrderController {
     })
     .catch(err => {
       const errorMessage = err.response.data;
+      console.log(err.response, '----------- ** --------')
+      console.log(err.response.data, '----------- ******* --------')
       if (errorMessage.trim() === 'Please login first') {
         const {body: {user} } = payload;
         const payloadData = {
@@ -423,6 +426,22 @@ export class OrderController {
 
   @MessagePattern({ cmd: 'order-print' })
   loadPrintedOrders(payload: any) {
+    const response =  this.orderService.loadPrintedOrders(payload);
+    return response.then(({ data: {print} }) => {
+      return {status: HttpStatus.OK, print};
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
+  @MessagePattern({ cmd: 'thermal-orders' })
+  loadThermalOrders(payload: any) {
     const response =  this.orderService.loadPrintedOrders(payload);
     return response.then(({ data: {print} }) => {
       return {status: HttpStatus.OK, print};
