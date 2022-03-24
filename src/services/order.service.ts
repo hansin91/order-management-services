@@ -153,6 +153,12 @@ export class OrderService {
     }).toPromise();
   }
 
+  loadExportedOrders(payload: any) {
+    const {token, body} = payload
+    const headers = {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+    return this.httpService.post(process.env.APP_URL + '/api/orders/export', body, {headers}).toPromise()
+  }
+
   loadOrders(payload: any) {
     const { search, token, stores, dropshipping, offset, limit, start, end, shippingId, status, date, page, shipping } = payload;
     const headers = {
@@ -204,15 +210,12 @@ export class OrderService {
   }
 
   loadPrintedOrders(payload: any) {
-    const { token, date, page, isSummary, type } = payload;
+    const { token, date, page, isSummary, document } = payload;
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     };
-    const params = {date, page, isSummary} as any
-    if (type) {
-      params.type = type
-    }
+    const params = {date, page, isSummary, document} as any
     return this.httpService.get(process.env.APP_URL + '/api/orders/print', { headers, params }).toPromise();
   }
 

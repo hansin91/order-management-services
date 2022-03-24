@@ -192,14 +192,13 @@ export class OrderController {
   @MessagePattern({ cmd: 'edit-order' })
   editOrder(payload: any) {
     const response =  this.orderService.editOrder(payload);
-    return response.then(({ data }) => {
+    return response.then(({ data: {order, list, products, statusSummary} }) => {
       return {
         status: HttpStatus.OK,
-        order: data.order,
-        orders: data.orders,
-        list: data.list,
-        products: data.products,
-        statusSummary: data.statusSummary,
+        order,
+        list,
+        products,
+        statusSummary
       };
     })
     .catch(err => {
@@ -316,6 +315,22 @@ export class OrderController {
     const response =  this.orderService.loadOrderDropshipping(payload);
     return response.then(({ data: {dropshipping} }) => {
       return {status: HttpStatus.OK, dropshipping};
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
+  @MessagePattern({cmd: 'exported-orders'})
+  loadExportedOrders(payload: any) {
+    const response = this.orderService.loadExportedOrders(payload)
+    return response.then(({ data: {orders} }) => {
+      return {status: HttpStatus.OK, orders};
     })
     .catch(err => {
       throw new RpcException({
@@ -458,8 +473,8 @@ export class OrderController {
   @MessagePattern({ cmd: 'print-orders' })
   printOrders(payload: any) {
     const response =  this.orderService.printOrders(payload);
-    return response.then(({ data: {orders} }) => {
-      return {status: HttpStatus.OK, orders};
+    return response.then(({ data: {message} }) => {
+      return {status: HttpStatus.OK, message};
     })
     .catch(err => {
       throw new RpcException({
