@@ -17,15 +17,43 @@ export class ProductController {
     });
   }
 
+  @MessagePattern({ cmd: 'load-shopee-v2-products' })
+  loadShopeeV2Products(payload: any) {
+    const response =  this.productService.loadShopeeV2Products(payload)
+    return response.then(({ data: {data: {hasNextPage, limit, nextOffset, total, products}} }) => {
+      return {status: HttpStatus.OK, hasNextPage, limit, nextOffset, total, products}
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
+  @MessagePattern({ cmd: 'get-shopee-v2-products' })
+  getShopeeV2Products(payload: any) {
+    const response =  this.productService.getShopeeV2Products(payload)
+    return response.then(({ data: {count, products} }) => {
+      return {status: HttpStatus.OK, count, products}
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        },
+      });
+    });
+  }
+
   @MessagePattern({ cmd: 'load-product-summary' })
   loadProductSummary(payload: any) {
-    const response =  this.productService.loadProductSummary(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        summary: data.summary,
-        all: data.all,
-      };
+    const response =  this.productService.loadProductSummary(payload)
+    return response.then(({ data: {summary} }) => {
+      return {status: HttpStatus.OK, summary}
     })
     .catch(err => {
       throw new RpcException({

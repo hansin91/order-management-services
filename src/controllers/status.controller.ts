@@ -28,12 +28,8 @@ export class StatusController {
   @MessagePattern({ cmd: 'load-status-summary' })
   loadStatusSummary(payload: any) {
     const response =  this.statusService.loadStatusSummary(payload);
-    return response.then(({ data }) => {
-      return {
-        status: HttpStatus.OK,
-        summary: data.summary,
-        all: data.all,
-      };
+    return response.then(({ data: {summary} }) => {
+      return {status: HttpStatus.OK, summary}
     })
     .catch(err => {
       throw new RpcException({

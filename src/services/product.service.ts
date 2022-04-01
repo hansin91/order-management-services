@@ -13,6 +13,18 @@ export class ProductService {
     return this.httpService.patch(process.env.ADMIN_URL + '/api/products', body, { headers }).toPromise();
   }
 
+  loadShopeeV2Products(payload: any) {
+    const {token, body} = payload
+    const headers = {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+    return this.httpService.post(process.env.APP_URL + '/shopee/v2/products', body, {headers}).toPromise()
+  }
+
+  getShopeeV2Products(payload: any) {
+    const {token} = payload
+    const headers = {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+    return this.httpService.get(process.env.APP_URL + '/shopee/v2/products', {headers}).toPromise()
+  }
+
   editProductStore(payload: any) {
     const { token, body } = payload;
     const headers = {
