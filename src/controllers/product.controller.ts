@@ -33,22 +33,6 @@ export class ProductController {
     });
   }
 
-  @MessagePattern({ cmd: 'get-shopee-v2-products' })
-  getShopeeV2Products(payload: any) {
-    const response =  this.productService.getShopeeV2Products(payload)
-    return response.then(({ data: {count, products} }) => {
-      return {status: HttpStatus.OK, count, products}
-    })
-    .catch(err => {
-      throw new RpcException({
-        error: {
-          status: err.response.status,
-          message: err.response.data,
-        },
-      });
-    });
-  }
-
   @MessagePattern({ cmd: 'load-product-summary' })
   loadProductSummary(payload: any) {
     const response =  this.productService.loadProductSummary(payload)
