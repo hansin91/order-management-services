@@ -14,6 +14,7 @@ import {
   PriceService,
   UploadedFileService,
   UploadedOrderService,
+  ReportService
 } from '@services';
 import {
   AuthController,
@@ -31,8 +32,9 @@ import {
   LocationController,
   PriceController,
   UploadedOrderController,
+  ReportController
 } from '@controllers';
-import { UploadConsumer, FileConsumer, OrderConsumer } from './consumer'
+import { UploadConsumer, FileConsumer, OrderConsumer, ProductsReportConsumer } from './consumer'
 import { Queue } from './queue'
 
 @Module({
@@ -44,7 +46,8 @@ import { Queue } from './queue'
     BullModule.registerQueue(
       {name: 'file-queue'},
       {name: 'upload-queue'},
-      {name: 'order-queue'}
+      {name: 'order-queue'},
+      {name: 'products-report-queue'}
     ),
   ],
   providers: [
@@ -61,9 +64,11 @@ import { Queue } from './queue'
     PriceService,
     UploadedFileService,
     UploadedOrderService,
+    ReportService,
     FileConsumer,
     OrderConsumer,
-    UploadConsumer
+    UploadConsumer,
+    ProductsReportConsumer
   ],
   controllers: [
     AuthController,
@@ -81,6 +86,7 @@ import { Queue } from './queue'
     PriceController,
     LocationController,
     UploadedOrderController,
+    ReportController
   ],
 })
 export class AppModule {}
