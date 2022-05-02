@@ -255,4 +255,10 @@ export class OrderService {
     return this.httpService.post(process.env.APP_URL + '/api/orders/details', body, { headers }).toPromise();
   }
 
+  findSingleOrder(payload: any) {
+    const {token, body} = payload
+    const headers = {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}
+    return this.httpService.get(process.env.APP_URL + `/api/orders/${body}`, {headers}).toPromise()
+  }
+
 }

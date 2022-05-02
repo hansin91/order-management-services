@@ -543,4 +543,20 @@ export class OrderController {
       }
     });
   }
+
+  @MessagePattern({cmd: 'load-single-order'})
+  loadSingleOrder(payload: any) {
+    const response =  this.orderService.findSingleOrder(payload)
+    return response.then(({ data: {order} }) => {
+      return {status: HttpStatus.OK, order}
+    })
+    .catch(err => {
+      throw new RpcException({
+        error: {
+          status: err.response.status,
+          message: err.response.data,
+        }
+      })
+    })
+  }
 }
