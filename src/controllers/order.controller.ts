@@ -37,15 +37,21 @@ export class OrderController {
         };
         const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
         payload.token = token;
-        response = this.orderService.saveOrder(payload);
-        return response.then(({ data: {order, param} }) => {
-          channel.ack(message);
-          return {
-            status: HttpStatus.OK,
-            data: order,
-            param,
-          };
-        });
+        channel.ack(message);
+        return {
+          status: HttpStatus.OK,
+          data: [],
+          param: {}
+        }
+        // response = this.orderService.saveOrder(payload);
+        // return response.then(({ data: {order, param} }) => {
+        //   channel.ack(message);
+        //   return {
+        //     status: HttpStatus.OK,
+        //     data: order,
+        //     param,
+        //   };
+        // });
       } else {
         throw new RpcException({
           error: {
