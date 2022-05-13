@@ -27,6 +27,7 @@ export class OrderController {
     })
     .catch(err => {
       const errorMessage = err.response.data;
+      console.log(err.response, '----save order----')
       if (errorMessage.trim() === 'Please login first') {
         const {body: {userId, user} } = payload;
         const payloadData = {
@@ -69,6 +70,7 @@ export class OrderController {
       };
     })
     .catch(err => {
+      console.log(err.response, '----save mass order----')
       const errorMessage = err.response.data;
       if (errorMessage.trim() === 'Please login first') {
         const {body: {user} } = payload;
@@ -111,6 +113,7 @@ export class OrderController {
       };
     })
     .catch(err => {
+      console.log(err.response, '----start mass order----')
       const errorMessage = err.response.data;
       if (errorMessage.trim() === 'Please login first') {
         const { body: {modifiedUser} } = payload;
@@ -157,9 +160,8 @@ export class OrderController {
       };
     })
     .catch(err => {
+      console.log(err.response, '----save bulk order----')
       const errorMessage = err.response.data;
-      console.log(err.response, '----------- ** --------')
-      console.log(err.response.data, '----------- ******* --------')
       if (errorMessage.trim() === 'Please login first') {
         const {body: {user} } = payload;
         const payloadData = {
@@ -202,6 +204,7 @@ export class OrderController {
       };
     })
     .catch(err => {
+      console.log(err.response, '----edit order----')
       throw new RpcException({
         error: {
           status: err.response.status,
@@ -287,6 +290,7 @@ export class OrderController {
       return {status: HttpStatus.OK, file};
     })
     .catch(err => {
+      console.log(err.response, '----update uploaded file----')
       const {response: {status, data}} = err;
       throw new RpcException({
         error: {status, message: data},
@@ -493,6 +497,7 @@ export class OrderController {
       return {status: HttpStatus.OK, orders};
     })
     .catch(err => {
+      console.log(err.response, '----mass order detail----')
       throw new RpcException({
         error: {
           status: err.response.status,
