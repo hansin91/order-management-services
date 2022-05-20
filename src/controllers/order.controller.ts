@@ -1,60 +1,51 @@
 import * as jwt from 'jsonwebtoken';
-import { Controller, HttpStatus, Logger } from '@nestjs/common';
+import { Controller, HttpStatus } from '@nestjs/common';
 import { RpcException, MessagePattern, Payload, Ctx, RmqContext, EventPattern } from '@nestjs/microservices';
 import { OrderService, UploadedFileService } from '@services';
 
 @Controller()
 export class OrderController {
-  private logger: Logger;
   constructor(
     private readonly uploadedFileService: UploadedFileService,
     private readonly orderService: OrderService) {
-    this.logger = new Logger();
   }
 
   @EventPattern('save-order')
   saveOrder(@Payload() payload: any, @Ctx() context: RmqContext ) {
-    const channel = context.getChannelRef();
-    const message = context.getMessage();
-    let response =  this.orderService.saveOrder(payload);
+    const channel = context.getChannelRef()
+    const message = context.getMessage()
+    let response =  this.orderService.saveOrder(payload)
     return response.then(({ data: {order, param} }) => {
-      channel.ack(message);
-      return {
-        status: HttpStatus.OK,
-        data: order,
-        param,
-      };
+      channel.ack(message)
+      return {status: HttpStatus.OK, data: order, param}
     })
     .catch(err => {
       const errorMessage = err.response.data;
-      console.log(err.response, '----save order----')
+      console.log(err.response.data, '----save order----')
       if (errorMessage.trim() === 'Please login first') {
         const {body: {userId, user} } = payload;
         const payloadData = {
           id: userId,
           email: user ? (user.email ? user.email : '') : '',
           username: user ? user.username : '',
-        };
-        const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' });
-        payload.token = token;
-        response = this.orderService.saveOrder(payload);
+        }
+        const token = jwt.sign(payloadData, process.env.SECRET_KEY, { expiresIn: '1d' })
+        payload.token = token
+        response = this.orderService.saveOrder(payload)
         return response.then(({ data: {order, param} }) => {
-          channel.ack(message);
-          return {
-            status: HttpStatus.OK,
-            data: order,
-            param,
-          };
-        });
+          channel.ack(message)
+          return {status: HttpStatus.OK, data: order, param}
+        })
+        // .catch((error) => {
+        //   channel.ack(message)
+        //   return {status: HttpStatus.OK, data: {}, param: {}}
+        // })
       } else {
         throw new RpcException({
-          error: {
-            status: err.response.status,
-            message: err.response.data,
-          },
-        });
+          error: {status: err.response.status, message: err.response.data}
+        })
       }
-    });
+    })
   }
 
   @EventPattern('save-mass-order')
