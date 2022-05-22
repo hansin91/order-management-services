@@ -36,10 +36,6 @@ export class OrderController {
           channel.ack(message)
           return {status: HttpStatus.OK, data: order, param}
         })
-        // .catch((error) => {
-        //   channel.ack(message)
-        //   return {status: HttpStatus.OK, data: {}, param: {}}
-        // })
       } else {
         throw new RpcException({
           error: {status: err.response.status, message: err.response.data}

@@ -34,7 +34,7 @@ import {
   UploadedOrderController,
   ReportController
 } from '@controllers';
-import { UploadConsumer, FileConsumer, OrderConsumer, ProductsReportConsumer } from './consumer'
+import { UploadConsumer, FileConsumer, OrderConsumer, ReportConsumer } from './consumer'
 import { Queue } from './queue'
 
 @Module({
@@ -47,7 +47,7 @@ import { Queue } from './queue'
       {name: 'file-queue'},
       {name: 'upload-queue'},
       {name: 'order-queue'},
-      {name: 'products-report-queue'}
+      {name: 'report-queue'}
     ),
   ],
   providers: [
@@ -68,7 +68,7 @@ import { Queue } from './queue'
     FileConsumer,
     OrderConsumer,
     UploadConsumer,
-    ProductsReportConsumer
+    ReportConsumer
   ],
   controllers: [
     AuthController,

@@ -3,15 +3,15 @@ import { Job } from 'bull'
 import { ReportService } from '@services'
 import { HttpStatus } from '@nestjs/common'
 
-@Processor('products-report-queue')
-export class ProductsReportConsumer {
+@Processor('report-queue')
+export class ReportConsumer {
 
   constructor(private readonly reportService: ReportService) {}
 
-  @Process('products-report-job')
-  async createRequestReport(job: Job<unknown>) {
+  @Process('product-job')
+  async processReports(job: Job<unknown>) {
     const payload = job.data
-    let response =  await this.reportService.processingProductsReport(payload)
+    let response =  await this.reportService.processReports(payload)
     return {status: HttpStatus.OK}
   }
 

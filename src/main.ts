@@ -1,8 +1,8 @@
-import './env';
-import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { Logger } from '@nestjs/common';
-import { AppModule } from './app.module';
+import './env'
+import { NestFactory } from '@nestjs/core'
+import { Transport } from '@nestjs/microservices'
+import { Logger } from '@nestjs/common'
+import { AppModule } from './app.module'
 
 const logger = new Logger()
 async function TCPBootstrap() {
@@ -13,55 +13,8 @@ async function TCPBootstrap() {
       host: process.env.HOST,
       port: PORT,
     },
-  });
-  app.listen(() => logger.log('TCP Microservice is listening on port '+ PORT));
-}
-
-async function AmpOrder() {
-  const app = await NestFactory.create(AppModule)
-  const PORT = Number(process.env.RABBITMQ_PORT)
-  const HOST = process.env.RABBITMQ_HOST
-  const USERNAME =  process.env.RABBITMQ_USER
-  const PASSWORD = process.env.RABBITMQ_PASSWORD
-
-  await app.connectMicroservice<MicroserviceOptions>({
-      transport: Transport.RMQ,
-      options: {
-      urls: ['amqp://' + USERNAME + ':' + PASSWORD + '@' + HOST + ':' + PORT],
-      queue: process.env.RABBITMQ_QUEUE,
-      queueOptions: {
-        durable: true
-      },
-      noAck: false,
-      prefetchCount: 1
-    }
   })
-  logger.log('Order Microservice is listening')
-  app.startAllMicroservices()
-}
-
-async function AmpUploadFile() {
-  const app = await NestFactory.create(AppModule)
-  const PORT = Number(process.env.RABBITMQ_PORT)
-  const HOST = process.env.RABBITMQ_HOST
-  const USERNAME =  process.env.RABBITMQ_USER
-  const PASSWORD = process.env.RABBITMQ_PASSWORD
-  await app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: ['amqp://' + USERNAME + ':' + PASSWORD + '@' + HOST + ':' + PORT],
-      queue: process.env.RABBITMQ_UPLOADED_ORDER_QUEUE,
-      queueOptions: {
-        durable: true
-      },
-      noAck: false,
-      prefetchCount: 1,
-    }
-  })
-  logger.log('Upload File Microservice is listening')
-  app.startAllMicroservices()
+  app.listen(() => logger.log('TCP Microservice is listening on port '+ PORT))
 }
 
 TCPBootstrap()
-AmpOrder()
-AmpUploadFile()
