@@ -431,34 +431,16 @@ export class OrderController {
 
   @MessagePattern({ cmd: 'order-print' })
   loadPrintedOrders(payload: any) {
-    const response =  this.orderService.loadPrintedOrders(payload);
+    const response =  this.orderService.loadPrintedOrders(payload)
     return response.then(({ data: {print} }) => {
-      return {status: HttpStatus.OK, print};
+      return {status: HttpStatus.OK, print}
     })
     .catch(err => {
+      const {response: {status, data}} = err
       throw new RpcException({
-        error: {
-          status: err.response.status,
-          message: err.response.data,
-        },
-      });
-    });
-  }
-
-  @MessagePattern({ cmd: 'thermal-orders' })
-  loadThermalOrders(payload: any) {
-    const response =  this.orderService.loadPrintedOrders(payload);
-    return response.then(({ data: {print} }) => {
-      return {status: HttpStatus.OK, print};
+        error: { status, message: data }
+      })
     })
-    .catch(err => {
-      throw new RpcException({
-        error: {
-          status: err.response.status,
-          message: err.response.data,
-        },
-      });
-    });
   }
 
   @MessagePattern({ cmd: 'print-orders' })
