@@ -1,4 +1,4 @@
-import { Process, Processor } from '@nestjs/bull'
+import { OnQueueActive, OnQueueCompleted, OnQueueError, OnQueueFailed, Process, Processor } from '@nestjs/bull'
 import { Job } from 'bull'
 import { OrderService } from '@services'
 import { HttpStatus } from '@nestjs/common'
@@ -25,6 +25,36 @@ export class OrderConsumer {
       const {data: {orders} } = response
       return {status: HttpStatus.OK, orders}
     }
+  }
+
+  @OnQueueActive()
+  onActive(job: Job) {
+    console.log(
+      `Processing job ${job.id} of type ${job.name} with data ${job.data}...`,
+    )
+  }
+
+  @OnQueueError()
+  onError(error: Error) {
+    console.log(`${error.name}: ${error.message}`)
+  }
+
+  @OnQueueFailed()
+  onFailed(job: Job, err: Error) {
+    console.log(
+      `Failed: Processing job ${job.id} of type ${job.name} with data ${job.data}...\n
+      ${err.name}: ${err.message}
+      `,
+    )
+  }
+
+  @OnQueueCompleted()   
+  onCompleted(job: Job, result: any) {
+    console.log(
+      `Completed: Processing job ${job.id} of type ${job.name} with data ${job.data}...\n
+      ${result}
+      `,
+    )
   }
 
 }
