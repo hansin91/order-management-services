@@ -16,7 +16,7 @@ async function bootstrap() {
     },
   })
   await app.startAllMicroservices()
-  await app.listen(PORT)
+  await app.listen(PORT, () => logger.log('TCP Microservice is listening on port '+ PORT))
   // const app = await NestFactory.createMicroservice(AppModule, {
   //   transport: Transport.TCP,
   //   options: {
