@@ -1,29 +1,37 @@
 import './env'
 import { NestFactory } from '@nestjs/core'
-import { Transport } from '@nestjs/microservices'
+import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 import { Logger } from '@nestjs/common'
 import { AppModule } from './app.module'
 
 const logger = new Logger()
 async function bootstrap() {
   const PORT = Number(process.env.PORT)
+  const NATS_PORT = Number(process.env.NATS_PORT)
+  const NATS_USERNAME = process.env.NATS_USERNAME
+  const NATS_PASSWORD = process.env.NATS_PASSWORD
+  const HOST = process.env.HOST
   const app = await NestFactory.create(AppModule)
-  app.connectMicroservice({
+  app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
     options: {
       host: process.env.HOST,
       port: PORT,
     },
   })
+
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.NATS,
+    options: {
+      servers: [`nats://${HOST}:${NATS_PORT}`],
+      user: `${NATS_USERNAME}`,
+      pass: `${NATS_PASSWORD}`
+    },
+  })
+
   await app.startAllMicroservices()
-  await app.listen(3003, () => logger.log('TCP Microservice is listening on port '+ 3003))
-  // const app = await NestFactory.createMicroservice(AppModule, {
-  //   transport: Transport.TCP,
-  //   options: {
-  //     host: process.env.HOST,
-  //     port: PORT,
-  //   },
-  // })
+  await app.listen(3003, () => logger.log('Microservices are listening on port '+ 3003))
+ 
   // app.listen(() => logger.log('TCP Microservice is listening on port '+ PORT))
 }
 

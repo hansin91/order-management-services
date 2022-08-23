@@ -36,10 +36,12 @@ import {
 } from '@controllers';
 import { UploadConsumer, FileConsumer, OrderConsumer, ReportConsumer } from './consumer'
 import { Queue } from './queue'
+import { CheckerModule } from './mobile/order-checker/checker.module';
 
 @Module({
   imports: [
     HttpModule,
+    CheckerModule,
     BullModule.forRoot({
       ...Queue
     }),
