@@ -34,19 +34,19 @@ export class OrderConsumer {
     )
   }
 
-  // @OnQueueError()
-  // onError(error: Error) {
-  //   console.log(`${error.name}: ${error.message}`)
-  // }
+  @OnQueueError()
+  onError(error: Error) {
+    console.log(`${error.name}: ${error.message}`)
+  }
 
-  // @OnQueueFailed()
-  // onFailed(job: Job, err: Error) {
-  //   console.log(
-  //     `Failed: Processing job ${job.id} of type ${job.name} with data ${job.data}...\n
-  //     ${err.name}: ${err.message}
-  //     `,
-  //   )
-  // }
+  @OnQueueFailed()
+  onFailed(job: Job, err: Error) {
+    console.log(
+      `Failed: Processing job ${job.id} of type ${job.name} with data ${job.data}...\n
+      ${err.name}: ${err.message}
+      `,
+    )
+  }
 
   @OnQueueCompleted()   
   onCompleted(job: Job, result: any) {

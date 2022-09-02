@@ -1,14 +1,17 @@
-import { HttpModule, Module } from "@nestjs/common"
-import { AuthController } from "./controllers"
-import { AuthService } from "./services"
+import { HttpModule, Module } from '@nestjs/common'
+import { AuthController, OrderController } from './controllers'
+import { AuthService, OrderCheckerService, OrderService } from './services'
 
 @Module({
   imports: [HttpModule],
   controllers: [
-    AuthController
+    AuthController,
+    OrderController
   ],
   providers: [
-    AuthService
+    AuthService,
+    OrderService,
+    OrderCheckerService
   ]
 })
 

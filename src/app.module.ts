@@ -36,7 +36,7 @@ import {
 } from '@controllers';
 import { UploadConsumer, FileConsumer, OrderConsumer, ReportConsumer } from './consumer'
 import { Queue } from './queue'
-import { CheckerModule } from './mobile/order-checker/checker.module';
+import { CheckerModule } from './mobile/order-checker/checker.module'
 
 @Module({
   imports: [
