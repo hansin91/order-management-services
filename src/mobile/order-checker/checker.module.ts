@@ -1,6 +1,6 @@
 import { HttpModule, Module } from '@nestjs/common'
 import { AuthController, OrderController } from './controllers'
-import { AuthService, OrderCheckerService, OrderService } from './services'
+import { AuthService, StatusService, OrderCheckerService, OrderService } from './services'
 
 @Module({
   imports: [HttpModule],
@@ -11,6 +11,7 @@ import { AuthService, OrderCheckerService, OrderService } from './services'
   providers: [
     AuthService,
     OrderService,
+    StatusService,
     OrderCheckerService
   ]
 })

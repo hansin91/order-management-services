@@ -15,4 +15,9 @@ export class OrderCheckerService {
     const {token, body} = payload
     return this.httpService.post(this.CHECKER_URL, body, {headers: setupHeaders(token)}).toPromise()
   }
+
+  updateOrderCheckerDetail(payload: any) {
+    const {token, body} = payload
+    return this.httpService.patch(this.CHECKER_URL + 'detail', body, {headers: setupHeaders(token)}).toPromise()
+  }
 }
