@@ -10,6 +10,11 @@ export class OrderCheckerService {
     const {token, body} = payload
     return this.httpService.post(this.CHECKER_URL + 'search', body, {headers: setupHeaders(token)}).toPromise()
   }
+
+  findOneOrderChecker(payload: any) {
+    const {token, id} = payload
+    return this.httpService.get(this.CHECKER_URL + `${id}`, {headers: setupHeaders(token)}).toPromise()
+  }
   
   createOrderChecker(payload: any) {
     const {token, body} = payload

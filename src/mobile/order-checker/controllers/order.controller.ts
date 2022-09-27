@@ -21,6 +21,17 @@ export class OrderController {
     }
   }
 
+  @MessagePattern({cmd: 'checker-find-one'})
+  async findOneOrderChecker(@Payload() payload: any) {
+    try {
+      const {data} = await this.orderCheckerService.findOneOrderChecker(payload)
+      return {status: HttpStatus.OK, data}
+    } catch (err) { 
+      const {response: {status, data}} = err
+      throw new RpcException({error: {status, message: data}})
+    }
+  }
+
   @MessagePattern({cmd: 'checker-status'})
   async findStatus(@Payload() payload: any) {
     try {
