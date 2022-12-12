@@ -8,14 +8,14 @@ export const Queue = {
     port: PORT,
     password: PASSWORD 
   },
-  settings: {
-    lockDuration: 30000,
-    lockRenewTime: 15000,
-    stalledInterval: 50000, 
-    maxStalledCount: 1,
-    guardInterval: 5000,
-    retryProcessDelay: 5000,
-    backoffStrategies: {},
-    drainDelay: 5
-  }
+  // settings: {
+  //   lockDuration: 30000,
+  //   lockRenewTime: 15000,
+  //   stalledInterval: 50000, 
+  //   maxStalledCount: 1,
+  //   guardInterval: 5000,
+  //   retryProcessDelay: 5000,
+  //   backoffStrategies: {},
+  //   drainDelay: 5
+  // }
 }
