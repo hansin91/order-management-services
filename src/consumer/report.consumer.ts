@@ -10,9 +10,13 @@ export class ReportConsumer {
 
   @Process('product-job')
   async processReports(job: Job<unknown>) {
-    const payload = job.data
-    let response =  await this.reportService.processReports(payload)
-    return {status: HttpStatus.OK}
+    try {
+      const payload = job.data
+      let response =  await this.reportService.processReports(payload)
+      return {status: HttpStatus.OK}  
+    } catch (error) {
+      console.log(error)
+    }
   }
 
 }
