@@ -5,7 +5,7 @@ export class AuthService {
   constructor(private readonly httpService: HttpService) {}
 
   login(payload: any) {
-    return this.httpService.post(process.env.ADMIN_URL + '/api/auth/login', payload).toPromise();
+    return this.httpService.post(process.env.APP_URL + '/api/auth/login', payload).toPromise();
   }
 
   googleLogin(token: string) {
@@ -13,7 +13,7 @@ export class AuthService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     };
-    return this.httpService.post(process.env.ADMIN_URL + '/api/auth/gLogin', '', { headers }).toPromise();
+    return this.httpService.post(process.env.APP_URL + '/api/auth/gLogin', '', { headers }).toPromise();
   }
 
   verify(token: string) {
@@ -21,7 +21,7 @@ export class AuthService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     };
-    return this.httpService.post(process.env.ADMIN_URL + '/api/auth/verify', '', { headers } ).toPromise();
+    return this.httpService.post(process.env.APP_URL + '/api/auth/verify', '', { headers } ).toPromise();
   }
 
   logout(token: string) {
@@ -29,6 +29,6 @@ export class AuthService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     };
-    return this.httpService.post(process.env.ADMIN_URL + '/api/auth/logout', '', { headers } ).toPromise();
+    return this.httpService.post(process.env.APP_URL + '/api/auth/logout', '', { headers } ).toPromise();
   }
 }

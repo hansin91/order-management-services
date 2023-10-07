@@ -21,14 +21,14 @@ async function bootstrap() {
     },
   })
 
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.NATS,
-    options: {
-      servers: [`nats://${HOST}:${NATS_PORT}`],
-      user: `${NATS_USERNAME}`,
-      pass: `${NATS_PASSWORD}`
-    },
-  })
+  // app.connectMicroservice<MicroserviceOptions>({
+  //   transport: Transport.NATS,
+  //   options: {
+  //     servers: [`nats://${HOST}:${NATS_PORT}`],
+  //     user: `${NATS_USERNAME}`,
+  //     pass: `${NATS_PASSWORD}`
+  //   },
+  // })
 
   await app.startAllMicroservices()
   await app.listen(3003, () => logger.log('Microservices are listening on port '+ 3003))
