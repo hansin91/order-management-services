@@ -14,13 +14,13 @@ async function bootstrap() {
   const HOST = process.env.HOST
   const environment = process.env.NODE_ENV
   let app = await NestFactory.create(AppModule);
-  if (environment !== 'development') {
-    const httpsOptions = {
-      key: readFileSync('./secret/privkey.pem'),
-      cert: readFileSync('./secret/cert.pem'),
-    };
-    app = await NestFactory.create(AppModule, {httpsOptions});
-  }
+  // if (environment !== 'development') {
+  //   const httpsOptions = {
+  //     key: readFileSync('./secret/privkey.pem'),
+  //     cert: readFileSync('./secret/cert.pem'),
+  //   };
+  //   app = await NestFactory.create(AppModule, {httpsOptions});
+  // }
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
