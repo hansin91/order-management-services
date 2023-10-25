@@ -17,11 +17,11 @@ async function bootstrap() {
   if (environment !== 'development') {
     const httpsOptions = {
       key: readFileSync('./secret/privkey.pem'),
-      cert: readFileSync('./secret/fullchain.pem'),
+      cert: readFileSync('./secret/cert.pem'),
     };
     app = await NestFactory.create(AppModule, {httpsOptions});
   }
-  
+
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
     options: {
