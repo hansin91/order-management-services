@@ -16,6 +16,7 @@ export class AuthController {
       };
     })
     .catch(err => {
+      console.log(err)
       throw new RpcException({
         error: {
           status: err.response.status,
