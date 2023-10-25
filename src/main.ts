@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core'
 import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 import { Logger } from '@nestjs/common'
 import { AppModule } from './app.module'
+import { readFileSync } from 'fs';
 
 async function bootstrap() {
   const logger = new Logger()
@@ -11,8 +12,16 @@ async function bootstrap() {
   const NATS_USERNAME = process.env.NATS_USERNAME
   const NATS_PASSWORD = process.env.NATS_PASSWORD
   const HOST = process.env.HOST
-  const app = await NestFactory.create(AppModule)
-
+  const environment = process.env.NODE_ENV
+  let app = await NestFactory.create(AppModule);
+  if (environment !== 'development') {
+    const httpsOptions = {
+      key: readFileSync('./secret/privkey.pem'),
+      cert: readFileSync('./secret/fullchain.pem'),
+    };
+    app = await NestFactory.create(AppModule, {httpsOptions});
+  }
+  
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
     options: {
